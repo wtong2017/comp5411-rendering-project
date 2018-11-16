@@ -1,4 +1,10 @@
 # Comp5411 Rendering Project - Room decoration simulator
+
+## How to run
+First, ```npm install```
+
+Then, ```node server.js```
+
 ## Overview
 We plan to implement a room decoration simulator. In this simulator, users can place different objects in the simulated room. This could help users to decorate or design the layout of their room. We would provide different layout of the room and objects such as furniture for users to choose. Different texture and material for objects could be chosen. Moveover, users could import their own images like wallpapers to be the textures of some objects like walls. Light and shading will be simulated as realistic as possible. Lastly, users could save their room to a file which could be loaded next time. Also, we will prepare some default layouts or rooms for users to choose.
 
