@@ -24,3 +24,31 @@ var Key = {
     delete this._pressed[event.keyCode];
   }
 };
+
+function cameraMovement() {
+  var turn = 1;
+  var speed = .5;
+  // up or down
+  if (Key.isDown(Key.W)) {
+    camera.rotation.x += turn* Math.PI / 180;
+  }
+  else if (Key.isDown(Key.S)) {
+    camera.rotation.x -= turn* Math.PI / 180;
+  } 
+  // left or right
+  if (Key.isDown(Key.A)) {
+    camera.rotation.y += turn* Math.PI / 180;
+  }
+  else if (Key.isDown(Key.D)) {
+    camera.rotation.y -= turn* Math.PI / 180;
+  }
+  // backward or forward
+  if (Key.isDown(Key.Q)) {
+    
+    camera.translateZ(-speed);
+  }
+  else if (Key.isDown(Key.E)) {
+    camera.translateZ(speed);
+    
+  }
+}

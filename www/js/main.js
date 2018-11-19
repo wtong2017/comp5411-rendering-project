@@ -32,6 +32,8 @@ camera.rotation.order = "YXZ"; // Rotation along y-axis will be correct, other w
 
 var scene = new Physijs.Scene;
 
+scene.background = new THREE.Color(0xbfbfbf);
+
 // add the camera to the scene
 scene.add(camera);
 
@@ -39,28 +41,28 @@ scene.add(camera);
 // not doing this somehow messes up shadow rendering
 camera.position.z = 20;
 
-// // set up the sphere vars
-// // lower 'segment' and 'ring' values will increase performance
-// var radius = 5,
-// segments = 6,
-// rings = 6;
+// set up the sphere vars
+// lower 'segment' and 'ring' values will increase performance
+var radius = 5,
+segments = 6,
+rings = 6;
 
-// // create the sphere's material
-// var sphereMaterial =
-// new THREE.MeshLambertMaterial(
-// {
-// color: 0xD43001
-// });
+// create the sphere's material
+var sphereMaterial =
+new THREE.MeshLambertMaterial(
+{
+color: 0xD43001
+});
 
-// // Create a ball with sphere geometry
-// var ball = new THREE.Mesh(
-//     new THREE.SphereGeometry(radius,
-//     segments,
-//     rings),
-//     sphereMaterial);
+// Create a ball with sphere geometry
+var ball = new THREE.Mesh(
+    new THREE.SphereGeometry(radius,
+    segments,
+    rings),
+    sphereMaterial);
 
-// // add the sphere to the scene
-// scene.add(ball);
+// add the sphere to the scene
+scene.add(ball);
 
 // instantiate a loader
 var loader = new THREE.OBJLoader();
@@ -84,6 +86,44 @@ loader.load(
     );
 
     box_container.add(object);
+    box_container.position.y = 5
+    box_container.position.x = 10
+    scene.add(box_container);
+		// scene.add( object );
+	},
+	// called when loading is in progresses
+	function ( xhr ) {
+
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+	},
+	// called when loading has errors
+	function ( error ) {
+
+		console.log( 'An error happened' );
+
+	}
+);
+
+loader.load(
+	// resource URL
+	'objs/table.obj',
+	// called when resource is loaded
+	function ( object ) {
+    object.scale.set(.05, .05, .05);
+    var bbox = new THREE.Box3().setFromObject(object);
+    var x = bbox.max.x-bbox.min.x;
+    var y = bbox.max.y-bbox.min.y;
+    var z = bbox.max.z-bbox.min.z;
+    var box_container = new Physijs.BoxMesh(
+        new THREE.CubeGeometry( x, y, z ),
+        // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+        // Uncomment the next line to see the wireframe of the container shape
+        new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
+    );
+
+    box_container.add(object);
+    box_container.position.y = 0
     scene.add(box_container);
 		// scene.add( object );
 	},
@@ -109,23 +149,15 @@ loader.load(
 // box.position.y = 5;
 // scene.add( box );
 
-var floor = new Physijs.BoxMesh(
-    new THREE.CubeGeometry( 10, 1, 10 ),
-    new THREE.MeshBasicMaterial({ color: 0xffffff }),
-    0
-);
-floor.position.y = -5;
-scene.add( floor );
-
 // create a point light
 var pointLight = new THREE.PointLight(0xF8D898);
 
 // set its position
-pointLight.position.x = -1000;
+pointLight.position.x = -20;
 pointLight.position.y = 0;
-pointLight.position.z = 1000;
-pointLight.intensity = 2.9;
-pointLight.distance = 10000;
+pointLight.position.z = 0;
+pointLight.intensity = 1;
+pointLight.distance = 100;
 
 // add to the scene
 scene.add(pointLight);
@@ -134,32 +166,63 @@ scene.add(pointLight);
 var light = new THREE.AmbientLight( 0x404040 ); // soft white light
 scene.add(light);
 
-function cameraMovement() {
-  var turn = 1;
-  var speed = .5;
-  // up or down
-  if (Key.isDown(Key.W)) {
-    camera.rotation.x += turn* Math.PI / 180;
-  }
-  else if (Key.isDown(Key.S)) {
-    camera.rotation.x -= turn* Math.PI / 180;
-  } 
-  // left or right
-  if (Key.isDown(Key.A)) {
-    camera.rotation.y += turn* Math.PI / 180;
-  }
-  else if (Key.isDown(Key.D)) {
-    camera.rotation.y -= turn* Math.PI / 180;
-  }
-  // backward or forward
-  if (Key.isDown(Key.Q)) {
-    
-    camera.translateZ(-speed);
-  }
-  else if (Key.isDown(Key.E)) {
-    camera.translateZ(speed);
-    
-  }
+buildRoom(scene, 100, 30, 10, 1);
+
+function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness) {
+  // Floor 
+  var bottom = new Physijs.BoxMesh(
+    new THREE.CubeGeometry( floorWidth, thickness, floorHeight ),
+    new THREE.MeshBasicMaterial({ color: 0x000000 }),
+    0
+  );
+
+  // Cover
+  var top = new Physijs.BoxMesh(
+    new THREE.CubeGeometry( floorWidth, thickness, floorHeight ),
+    new THREE.MeshBasicMaterial({ color: 0x000000 }),
+    0
+  ); 
+
+  // Walls
+  var front = new Physijs.BoxMesh(
+    new THREE.CubeGeometry( floorWidth, thickness, wallHeight ),
+    new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    0
+  );
+  var back = new Physijs.BoxMesh(
+    new THREE.CubeGeometry( floorWidth, thickness, wallHeight ),
+    new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    0
+  );
+  var right = new Physijs.BoxMesh(
+    new THREE.CubeGeometry( wallHeight, thickness, floorHeight ),
+    new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    0
+  );
+  var left = new Physijs.BoxMesh(
+    new THREE.CubeGeometry( wallHeight, thickness, floorHeight ),
+    new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    0
+  );
+  front.rotation.x += Math.PI/2;
+  back.rotation.x += Math.PI/2;
+  right.rotation.z += Math.PI/2;
+  left.rotation.z += Math.PI/2;
+  
+  bottom.position.y -= (wallHeight + thickness)/2;
+  top.position.y += (wallHeight + thickness)/2;
+  front.position.z += (floorHeight + thickness)/2;
+  back.position.z -= (floorHeight + thickness)/2;
+  right.position.x += (floorWidth + thickness)/2;
+  left.position.x -= (floorWidth + thickness)/2;
+
+  scene.add( bottom );
+  scene.add( top );
+  scene.add( front );
+  scene.add( back);
+  scene.add( rignt );
+  scene.add( left );
+  return [bottom, top, front, back, rignt, left]
 }
 
 function setup()
