@@ -39,7 +39,7 @@ scene.add(camera);
 
 // set a default position for the camera
 // not doing this somehow messes up shadow rendering
-camera.position.z = 20;
+camera.position.z = 10;
 
 // set up the sphere vars
 // lower 'segment' and 'ring' values will increase performance
@@ -220,15 +220,19 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness) {
   scene.add( top );
   scene.add( front );
   scene.add( back);
-  scene.add( rignt );
+  scene.add( right );
   scene.add( left );
-  return [bottom, top, front, back, rignt, left]
+  return [bottom, top, front, back, right, left]
 }
 
 function setup()
 {
   draw();
 }
+
+// Control
+var controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enablePan = false;
 
 function draw()
 {  
@@ -237,8 +241,8 @@ function draw()
     // draw THREE.JS scene
     renderer.render(scene, camera);
 
+    controls.update();
     // loop the draw() function
     requestAnimationFrame(draw);
 
-    cameraMovement();
 }
