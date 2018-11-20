@@ -43,31 +43,30 @@ camera.position.z = 10;
 
 // set up the sphere vars
 // lower 'segment' and 'ring' values will increase performance
-var radius = 5,
-segments = 6,
-rings = 6;
+// var radius = 5,
+// segments = 6,
+// rings = 6;
 
 // create the sphere's material
-var sphereMaterial =
-new THREE.MeshLambertMaterial(
-{
-color: 0xD43001
-});
+// var sphereMaterial =
+// new THREE.MeshLambertMaterial(
+// {
+// color: 0xD43001
+// });
 
 // Create a ball with sphere geometry
-var ball = new THREE.Mesh(
-    new THREE.SphereGeometry(radius,
-    segments,
-    rings),
-    sphereMaterial);
-
-// add the sphere to the scene
-scene.add(ball);
+// var ball = new THREE.Mesh(
+//     new THREE.SphereGeometry(radius,
+//     segments,
+//     rings),
+//     sphereMaterial);
+// 
+// // add the sphere to the scene
+// scene.add(ball);
 
 // instantiate a loader
 var loader = new THREE.OBJLoader();
 
-// load a resource
 loader.load(
 	// resource URL
 	'objs/table.obj',
@@ -82,44 +81,7 @@ loader.load(
         new THREE.CubeGeometry( x, y, z ),
         // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
         // Uncomment the next line to see the wireframe of the container shape
-        new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
-    );
-
-    box_container.add(object);
-    box_container.position.y = 5
-    box_container.position.x = 10
-    scene.add(box_container);
-		// scene.add( object );
-	},
-	// called when loading is in progresses
-	function ( xhr ) {
-
-		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-	},
-	// called when loading has errors
-	function ( error ) {
-
-		console.log( 'An error happened' );
-
-	}
-);
-
-loader.load(
-	// resource URL
-	'objs/table.obj',
-	// called when resource is loaded
-	function ( object ) {
-    object.scale.set(.05, .05, .05);
-    var bbox = new THREE.Box3().setFromObject(object);
-    var x = bbox.max.x-bbox.min.x;
-    var y = bbox.max.y-bbox.min.y;
-    var z = bbox.max.z-bbox.min.z;
-    var box_container = new Physijs.BoxMesh(
-        new THREE.CubeGeometry( x, y, z ),
-        // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
-        // Uncomment the next line to see the wireframe of the container shape
-        new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
+        new THREE.MeshPhongMaterial({ wireframe: true, opacity: 0.5 })
     );
 
     box_container.add(object);
@@ -166,7 +128,7 @@ scene.add(pointLight);
 var light = new THREE.AmbientLight( 0x404040 ); // soft white light
 scene.add(light);
 
-buildRoom(scene, 100, 30, 10, 1);
+buildRoom(scene, 100, 30, 20, 1);
 
 function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness) {
   // Floor 
