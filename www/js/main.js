@@ -32,7 +32,18 @@ camera.rotation.order = "YXZ"; // Rotation along y-axis will be correct, other w
 
 var scene = new Physijs.Scene;
 
-scene.background = new THREE.Color(0xbfbfbf);
+// skybox
+var path = "skybox/ThickCloudsWater/ThickCloudsWater";
+var format = '.png';
+var urls = [
+  path + 'Right2048' + format, path + 'Left2048' + format,
+  path + 'Up2048' + format, path + 'Down2048' + format,
+  path + 'Back2048' + format, path + 'Front2048' + format
+];
+var reflectionCube = new THREE.CubeTextureLoader().load( urls );
+reflectionCube.format = THREE.RGBFormat;
+
+scene.background = reflectionCube;
 
 // add the camera to the scene
 scene.add(camera);
@@ -103,14 +114,6 @@ loader.load(
 	}
 );
 
-// // Box
-// var box = new Physijs.BoxMesh(
-//     new THREE.CubeGeometry( 5, 5, 5 ),
-//     new THREE.MeshBasicMaterial({ color: 0x888888 }),
-// );
-// box.position.y = 5;
-// scene.add( box );
-
 // create a point light
 var pointLight = new THREE.PointLight(0xF8D898);
 
@@ -128,6 +131,14 @@ scene.add(pointLight);
 var light = new THREE.AmbientLight( 0x404040 ); // soft white light
 scene.add(light);
 
+// Ground
+var ground = new Physijs.BoxMesh(
+    new THREE.CubeGeometry( 1000, 1, 1000 ),
+    new THREE.MeshBasicMaterial({ color: 0x888888 }),
+    0
+);
+ground.position.y = -11;
+scene.add( ground );
 buildRoom(scene, 100, 30, 20, 1);
 
 function setup()

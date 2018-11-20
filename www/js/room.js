@@ -89,7 +89,7 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness) {
         var windowPos = [0, 0, 0];
         windowPos[0] = 0 - floorWidth/2 + floorWidth/(numOfWindow+1)*(i+1);
         var window = new Window(10, 10, thickness/4, windowPos);
-        window.createMesh(new THREE.MeshLambertMaterial({ color: 0xffffff, transparent: true, opacity: 0.3 }))
+        window.createMesh(new THREE.MeshLambertMaterial({ color: 0xffffff, transparent: true, opacity: 0.3, envMap: reflectionCube }))
         backWindows.push(window);
     }
     var back = buildWall(floorWidth, wallHeight, thickness, [0, 0, -(floorHeight + thickness)/2], [Math.PI / 2, 0, 0], 0xffffff, backWindows);
