@@ -81,7 +81,7 @@ loader.load(
         new THREE.CubeGeometry( x, y, z ),
         // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
         // Uncomment the next line to see the wireframe of the container shape
-        new THREE.MeshPhongMaterial({ wireframe: true, opacity: 0.5 })
+        new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
     );
 
     box_container.add(object);
@@ -134,36 +134,36 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness) {
   // Floor 
   var bottom = new Physijs.BoxMesh(
     new THREE.CubeGeometry( floorWidth, thickness, floorHeight ),
-    new THREE.MeshBasicMaterial({ color: 0x000000 }),
+    new THREE.MeshPhongMaterial({ color: 0x000000 }),
     0
   );
 
   // Cover
   var top = new Physijs.BoxMesh(
     new THREE.CubeGeometry( floorWidth, thickness, floorHeight ),
-    new THREE.MeshBasicMaterial({ color: 0x000000 }),
+    new THREE.MeshPhongMaterial({ color: 0x000000 }),
     0
   ); 
 
   // Walls
   var front = new Physijs.BoxMesh(
     new THREE.CubeGeometry( floorWidth, thickness, wallHeight ),
-    new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    new THREE.MeshPhongMaterial({ color: 0xffffff }),
     0
   );
   var back = new Physijs.BoxMesh(
     new THREE.CubeGeometry( floorWidth, thickness, wallHeight ),
-    new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    new THREE.MeshPhongMaterial({ color: 0xffffff }),
     0
   );
   var right = new Physijs.BoxMesh(
     new THREE.CubeGeometry( wallHeight, thickness, floorHeight ),
-    new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    new THREE.MeshPhongMaterial({ color: 0xffffff }),
     0
   );
   var left = new Physijs.BoxMesh(
     new THREE.CubeGeometry( wallHeight, thickness, floorHeight ),
-    new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    new THREE.MeshPhongMaterial({ color: 0xffffff }),
     0
   );
   front.rotation.x += Math.PI/2;
