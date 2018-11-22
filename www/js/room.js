@@ -72,10 +72,10 @@ function buildWall(width, height, thickness, pos, rot, color, windows) {
 
 function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness) {
     // Floor 
-    var bottom = buildFloor(floorWidth, floorHeight, thickness, [0, -(wallHeight + thickness)/2, 0], [0, 0, 0], 0x000000);
+    var bottom = buildFloor(floorWidth, floorHeight, thickness, [0, -(wallHeight + thickness)/2, 0], [0, 0, 0], 0xffffff);
   
     // Cover
-    var top = buildFloor(floorWidth, floorHeight, thickness, [0, (wallHeight + thickness)/2, 0], [0, 0, 0], 0x000000);
+    var top = buildFloor(floorWidth, floorHeight, thickness, [0, (wallHeight + thickness)/2, 0], [0, 0, 0], 0xffffff);
   
     // Walls
     var doorHeight = 15

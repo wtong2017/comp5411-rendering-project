@@ -139,7 +139,8 @@ var ground = new Physijs.BoxMesh(
 );
 ground.position.y = -11;
 scene.add( ground );
-buildRoom(scene, 100, 30, 20, 1);
+// scene, floorWidth, floorHeight, wallHeight, thickness
+buildRoom(scene, 100, 100, 20, 1);
 
 function setup()
 {
