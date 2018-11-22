@@ -19,6 +19,7 @@ var renderer = new THREE.WebGLRenderer();
 
 // start the renderer
 renderer.setSize(WIDTH, HEIGHT);
+renderer.shadowMapEnabled = true;
 
 // attach the render-supplied DOM element
 document.body.appendChild(renderer.domElement);
@@ -52,29 +53,6 @@ scene.background = reflectionCube;
 // not doing this somehow messes up shadow rendering
 // camera.position.z = 10;
 
-// set up the sphere vars
-// lower 'segment' and 'ring' values will increase performance
-// var radius = 5,
-// segments = 6,
-// rings = 6;
-
-// create the sphere's material
-// var sphereMaterial =
-// new THREE.MeshLambertMaterial(
-// {
-// color: 0xD43001
-// });
-
-// Create a ball with sphere geometry
-// var ball = new THREE.Mesh(
-//     new THREE.SphereGeometry(radius,
-//     segments,
-//     rings),
-//     sphereMaterial);
-// 
-// // add the sphere to the scene
-// scene.add(ball);
-
 // instantiate a loader
 var loader = new THREE.OBJLoader();
 
@@ -94,7 +72,13 @@ loader.load(
         // Uncomment the next line to see the wireframe of the container shape
         new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
     );
-
+    object.traverse( function ( child ) { // Solve shadow problem: https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
+      if ( child instanceof THREE.Mesh ) {
+          // child.material.map = texture;
+          child.castShadow = true;
+      }
+  
+    } );
     box_container.add(object);
     box_container.position.x = 10
     scene.add(box_container);
@@ -114,18 +98,50 @@ loader.load(
 	}
 );
 
+// set up the sphere vars
+// lower 'segment' and 'ring' values will increase performance
+var radius = .5,
+segments = 6,
+rings = 6;
+
+// create the sphere's material
+var sphereMaterial =
+new THREE.MeshLambertMaterial(
+{
+  color: 0xD43001
+});
+
+// Create a ball with sphere geometry
+var ball = new THREE.Mesh(
+  new THREE.SphereGeometry(radius,
+  segments,
+  rings),
+  sphereMaterial);
+
+// Create a ball with sphere geometry
+var lightBall = new THREE.Mesh(
+  new THREE.SphereGeometry(radius,
+  segments,
+  rings),
+  sphereMaterial);
+
 // create a point light
 var pointLight = new THREE.PointLight(0xF8D898);
+pointLight.intensity = 1;
+pointLight.distance = 1000;
+pointLight.castShadow = true;
+
+lightBall.add(pointLight)
+scene.add(lightBall)
 
 // set its position
-pointLight.position.x = -20;
-pointLight.position.y = 0;
-pointLight.position.z = 0;
-pointLight.intensity = 1;
-pointLight.distance = 100;
-
-// add to the scene
-scene.add(pointLight);
+ball.position.x = -20;
+ball.position.y = -5;
+ball.position.z = 0;
+ball.receiveShadow = true;
+ball.castShadow = true;
+// add the sphere to the scene
+scene.add(ball);
 
 // AmbientLight
 var light = new THREE.AmbientLight( 0x404040 ); // soft white light

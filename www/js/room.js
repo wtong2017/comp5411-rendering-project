@@ -96,6 +96,19 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness) {
     var right = buildWall(wallHeight, floorHeight, thickness, [(floorWidth + thickness)/2, 0, 0], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
     var left = buildWall(wallHeight, floorHeight, thickness, [-(floorWidth + thickness)/2, 0, 0], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
   
+    bottom.receiveShadow = true;
+    bottom.castShadow = true; 
+    top.receiveShadow = true;
+    top.castShadow = true; 
+    front.receiveShadow = true;
+    front.castShadow = true; 
+    back.receiveShadow = true;
+    back.castShadow = true; 
+    right.receiveShadow = true;
+    right.castShadow = true; 
+    left.receiveShadow = true;
+    left.castShadow = true; 
+
     scene.add( bottom );
     scene.add( top );
     scene.add( front );

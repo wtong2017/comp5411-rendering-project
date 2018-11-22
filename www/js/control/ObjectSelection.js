@@ -9,8 +9,10 @@ function onMouseDown( event ) {
 			// update the picking ray with the camera and mouse position
 			raycaster.setFromCamera( mouse, camera );
 			// calculate objects intersecting the picking ray
-			var intersects = raycaster.intersectObjects( scene.children );
-			intersects[0].object.material.color.set( 0xff0000 ); // First intersect object
+			var intersects = raycaster.intersectObjects( scene.children, true ); // Allow recursion
+			if (intersects.length > 0) {
+				intersects[0].object.material.color.set( 0xff0000 ); // First intersect object
+			}
 			// for ( var i = 0; i < intersects.length; i++ ) {
 			//   intersects[ i ].object.material.color.set( 0xff0000 );
 			// }  
