@@ -3,6 +3,10 @@
  * @author Mugen87 / https://github.com/Mugen87
  */
 
+var speed = 50;
+var direction = new THREE.Vector3();
+var clock = new THREE.Clock();
+
 THREE.PointerLockControls = function ( camera, domElement ) {
 
 	var scope = this;
@@ -16,7 +20,7 @@ THREE.PointerLockControls = function ( camera, domElement ) {
 	pitchObject.add( camera );
 
 	var yawObject = new THREE.Object3D();
-	yawObject.position.y = 10;
+	// yawObject.position.y = 10;
 	yawObject.add( pitchObject );
 
 	var PI_2 = Math.PI / 2;
@@ -120,7 +124,86 @@ THREE.PointerLockControls = function ( camera, domElement ) {
 
 	this.connect();
 
+	this.update = function() {
+		var control = this.getObject();
+		var delta = clock.getDelta();
+
+		direction.z = - Number( moveForward ) + Number( moveBackward );
+		direction.x = - Number( moveLeft ) + Number( moveRight );
+		direction.y = - Number( moveDown ) + Number( moveUp );
+		direction.normalize(); // this ensures consistent movements in all directions
+
+		control.translateX( speed * direction.x * delta );
+		control.translateY( speed * direction.y * delta );
+		control.translateZ( speed * direction.z * delta );
+	}
+
 };
 
 THREE.PointerLockControls.prototype = Object.create( THREE.EventDispatcher.prototype );
 THREE.PointerLockControls.prototype.constructor = THREE.PointerLockControls;
+
+// Handle movement
+var moveForward = false;
+var moveBackward = false;
+var moveLeft = false;
+var moveRight = false;
+var moveUp = false;
+var moveDown = false;
+
+var onKeyDown = function ( event ) {
+    switch ( event.keyCode ) {
+        case 38: // up
+        case 87: // w
+            moveForward = true;
+            break;
+        case 37: // left
+        case 65: // a
+			moveLeft = true; 
+			break;
+        case 40: // down
+        case 83: // s
+            moveBackward = true;
+            break;
+        case 39: // right
+        case 68: // d
+            moveRight = true;
+            break;
+		case 69: // up
+			moveUp = true;
+			break;
+		case 81: // down
+			moveDown = true;
+			break;
+    }
+};
+
+var onKeyUp = function ( event ) {
+	switch ( event.keyCode ) {
+		case 38: // up
+		case 87: // w
+			moveForward = false;
+			break;
+		case 37: // left
+		case 65: // a
+			moveLeft = false;
+			break;
+		case 40: // down
+		case 83: // s
+			moveBackward = false;
+			break;
+		case 39: // right
+		case 68: // d
+			moveRight = false;
+			break;
+		case 69: // up
+			moveUp = false;
+			break;
+		case 81: // down
+			moveDown = false;
+			break;
+	}
+};
+
+document.addEventListener( 'keydown', onKeyDown, false );
+document.addEventListener( 'keyup', onKeyUp, false );

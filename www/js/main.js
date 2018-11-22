@@ -46,11 +46,11 @@ reflectionCube.format = THREE.RGBFormat;
 scene.background = reflectionCube;
 
 // add the camera to the scene
-scene.add(camera);
+// scene.add(camera);
 
 // set a default position for the camera
 // not doing this somehow messes up shadow rendering
-camera.position.z = 10;
+// camera.position.z = 10;
 
 // set up the sphere vars
 // lower 'segment' and 'ring' values will increase performance
@@ -96,7 +96,7 @@ loader.load(
     );
 
     box_container.add(object);
-    box_container.position.y = 0
+    box_container.position.x = 10
     scene.add(box_container);
 		// scene.add( object );
 	},
@@ -148,8 +148,28 @@ function setup()
 }
 
 // Control
-var controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enablePan = false;
+// var controls = new THREE.OrbitControls(camera, renderer.domElement);
+// controls.enablePan = false;
+var blocker = document.getElementById( 'blocker' );
+var instructions = document.getElementById( 'instructions' );
+instructions.addEventListener( 'click', function () {
+  controls.lock();
+}, false );
+
+var controls = new THREE.PointerLockControls(camera);
+controls.addEventListener( 'lock', function () {
+  instructions.style.display = 'none';
+  blocker.style.display = 'none';
+} );
+controls.addEventListener( 'unlock', function () {
+  blocker.style.display = 'block';
+  instructions.style.display = '';
+} );
+scene.add( controls.getObject() );
+
+
+// Set up a raycaster
+var raycaster = new THREE.Raycaster();
 
 function draw()
 {  
@@ -161,5 +181,4 @@ function draw()
     controls.update();
     // loop the draw() function
     requestAnimationFrame(draw);
-
 }
