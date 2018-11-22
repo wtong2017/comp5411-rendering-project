@@ -152,6 +152,7 @@ function setup()
 // controls.enablePan = false;
 var blocker = document.getElementById( 'blocker' );
 var instructions = document.getElementById( 'instructions' );
+var aim = document.getElementById('aim');
 instructions.addEventListener( 'click', function () {
   controls.lock();
 }, false );
@@ -160,16 +161,14 @@ var controls = new THREE.PointerLockControls(camera);
 controls.addEventListener( 'lock', function () {
   instructions.style.display = 'none';
   blocker.style.display = 'none';
+  aim.style.display = 'block';
 } );
 controls.addEventListener( 'unlock', function () {
   blocker.style.display = 'block';
   instructions.style.display = '';
+  aim.style.display = 'none';
 } );
 scene.add( controls.getObject() );
-
-
-// Set up a raycaster
-var raycaster = new THREE.Raycaster();
 
 function draw()
 {  
@@ -179,6 +178,7 @@ function draw()
     renderer.render(scene, camera);
 
     controls.update();
+
     // loop the draw() function
     requestAnimationFrame(draw);
 }
