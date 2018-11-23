@@ -86,10 +86,41 @@ loader.load(
       }
     } );
     box_container.add(object);
-    box_container.position.x = 10
-    box_container.position.y = 5
+    box_container.position.x = 10;
+    box_container.position.y = 5;
     scene.add(box_container);
 		// scene.add( object );
+	},
+	// called when loading is in progresses
+	function ( xhr ) {
+
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+	},
+	// called when loading has errors
+	function ( error ) {
+
+		console.log( 'An error happened' );
+
+	}
+);
+
+// load bed
+loader.load(
+	// resource URL
+	'objs/dining-table.obj/diningtable.obj',
+	// called when resource is loaded
+	function ( object ) {
+    object.scale.set(.05, .05, .05);
+    var box = new THREE.BoxHelper( object, 0xffffff );
+    box.add(object);
+    var box_container = new Physijs.createMaterial(
+      box,
+      0.8, 
+      0.4
+  );
+    scene.add(box_container);
+
 	},
 	// called when loading is in progresses
 	function ( xhr ) {
