@@ -39,6 +39,10 @@
 				text-align: center;
 				cursor: pointer;
 			}
+			#instructions {
+				position: absolute;
+				top: 0;
+			}
 			.dot {
 				height: 10px;
 				width: 10px;
@@ -61,8 +65,8 @@
 		<script src="js/loader/OBJLoader.js"></script>
 		<!-- <script src='js/control/OrbitControls.js'></script> -->
 		<script src="js/control/PointerLockControls.js"></script>
-		<script src="js/control/objectSelection.js"></script>
 		<script src='./js/room.js'></script>
+		<div id="message">MESSAGE</div>
 		<div id="blocker">
 			<div id="instructions">
 				<span style="font-size:40px">Click to play</span>
@@ -71,6 +75,7 @@
 			</div>
 		</div>
 		<div id="aim" class="dot center"></div>
+		<script src="js/control/objectSelection.js"></script>
 		<script src='./js/main.js'></script>
 	</body>
 </html>

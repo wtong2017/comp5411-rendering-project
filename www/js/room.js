@@ -109,6 +109,13 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness) {
     left.receiveShadow = true;
     left.castShadow = true; 
 
+    bottom.name = 'bottom';
+    top.name = 'top';
+    front.name = 'front';
+    back.name = 'back';
+    right.name = 'right';
+    left.name = 'left';
+
     scene.add( bottom );
     scene.add( top );
     scene.add( front );

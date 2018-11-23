@@ -77,7 +77,6 @@ loader.load(
           // child.material.map = texture;
           child.castShadow = true;
       }
-  
     } );
     box_container.add(object);
     box_container.position.x = 10
