@@ -70,19 +70,19 @@ function buildWall(width, height, thickness, pos, rot, color, windows) {
     return resultMesh;
 }
 
-function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness) {
+function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness, pos) {
     // Floor 
-    var bottom = buildFloor(floorWidth, floorHeight, thickness, [0, -(wallHeight + thickness)/2, 0], [0, 0, 0], 0xffffff);
+    var bottom = buildFloor(floorWidth, floorHeight, thickness, pos, [0, 0, 0], 0xffffff);
   
     // Cover
-    var top = buildFloor(floorWidth, floorHeight, thickness, [0, (wallHeight + thickness)/2, 0], [0, 0, 0], 0xffffff);
+    var top = buildFloor(floorWidth, floorHeight, thickness, [pos[0], pos[1] + wallHeight + thickness, pos[2]], [0, 0, 0], 0xffffff);
   
     // Walls
     var doorHeight = 15
     var frontDoors = [new Window(10, doorHeight, thickness, [0, 0, -(wallHeight-doorHeight)/2])]; // NOTE: Since the floor is originally horizontal, we need to modify the z axis for the position of height
     frontDoors.push(new Window(10, 10, thickness, [-20, 0, 0])); // Add a window
     frontDoors.push(new Window(10, 10, thickness, [20, 0, 0])); // Add a window
-    var front = buildWall(floorWidth, wallHeight, thickness, [0, 0, (floorHeight + thickness)/2], [-Math.PI / 2, 0, 0], 0xffffff, frontDoors);
+    var front = buildWall(floorWidth, wallHeight, thickness, [pos[0], pos[1] + (wallHeight + thickness)/2, pos[2]+(floorHeight + thickness)/2], [-Math.PI / 2, 0, 0], 0xffffff, frontDoors);
     var backWindows = [];
     var numOfWindow = 2;
     for (let i = 0; i < numOfWindow; i++) {
@@ -92,9 +92,9 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness) {
         window.createMesh(new THREE.MeshLambertMaterial({ color: 0xffffff, transparent: true, opacity: 0.3, envMap: reflectionCube }))
         backWindows.push(window);
     }
-    var back = buildWall(floorWidth, wallHeight, thickness, [0, 0, -(floorHeight + thickness)/2], [Math.PI / 2, 0, 0], 0xffffff, backWindows);
-    var right = buildWall(wallHeight, floorHeight, thickness, [(floorWidth + thickness)/2, 0, 0], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
-    var left = buildWall(wallHeight, floorHeight, thickness, [-(floorWidth + thickness)/2, 0, 0], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
+    var back = buildWall(floorWidth, wallHeight, thickness, [pos[0], pos[1] + (wallHeight + thickness)/2, pos[2]-(floorHeight + thickness)/2], [Math.PI / 2, 0, 0], 0xffffff, backWindows);
+    var right = buildWall(wallHeight, floorHeight, thickness, [pos[0]+(floorWidth + thickness)/2, pos[1]+ (wallHeight + thickness)/2, pos[2]], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
+    var left = buildWall(wallHeight, floorHeight, thickness, [pos[0]-(floorWidth + thickness)/2, pos[1]+ (wallHeight + thickness)/2, pos[2]], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
   
     bottom.receiveShadow = true;
     bottom.castShadow = true; 

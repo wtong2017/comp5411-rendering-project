@@ -20,6 +20,7 @@ var renderer = new THREE.WebGLRenderer();
 // start the renderer
 renderer.setSize(WIDTH, HEIGHT);
 renderer.shadowMapEnabled = true;
+// renderer.shadowMap.renderReverseSided = false;
 
 // attach the render-supplied DOM element
 document.body.appendChild(renderer.domElement);
@@ -80,6 +81,7 @@ loader.load(
     } );
     box_container.add(object);
     box_container.position.x = 10
+    box_container.position.y = 5
     scene.add(box_container);
 		// scene.add( object );
 	},
@@ -131,11 +133,12 @@ pointLight.distance = 100;
 pointLight.castShadow = true;
 
 lightBall.add(pointLight)
+lightBall.position.y = 8;
 scene.add(lightBall)
 
 // set its position
 ball.position.x = -20;
-ball.position.y = -5;
+ball.position.y = 5;
 ball.position.z = 0;
 ball.receiveShadow = true;
 ball.castShadow = true;
@@ -174,12 +177,12 @@ var ground = new Physijs.BoxMesh(
     new THREE.MeshPhongMaterial({ color: 0x888888 }),
     0
 );
-ground.position.y = -11;
+// ground.position.y = -11;
 ground.receiveShadow = true;
 ground.castShadow = true;
 scene.add( ground );
 // scene, floorWidth, floorHeight, wallHeight, thickness
-buildRoom(scene, 100, 100, 20, 1);
+buildRoom(scene, 100, 100, 20, 1, [0,1,0]);
 
 function setup()
 {
@@ -196,7 +199,7 @@ instructions.addEventListener( 'click', function () {
   controls.lock();
 }, false );
 
-var controls = new THREE.PointerLockControls(camera);
+var controls = new THREE.PointerLockControls(camera, 10);
 controls.addEventListener( 'lock', function () {
   instructions.style.display = 'none';
   blocker.style.display = 'none';

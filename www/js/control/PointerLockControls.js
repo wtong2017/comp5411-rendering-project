@@ -7,7 +7,7 @@ var speed = 50;
 var direction = new THREE.Vector3();
 var clock = new THREE.Clock();
 
-THREE.PointerLockControls = function ( camera, domElement ) {
+THREE.PointerLockControls = function ( camera, height, domElement ) {
 
 	var scope = this;
 
@@ -20,7 +20,7 @@ THREE.PointerLockControls = function ( camera, domElement ) {
 	pitchObject.add( camera );
 
 	var yawObject = new THREE.Object3D();
-	// yawObject.position.y = 10;
+	yawObject.position.y = height;
 	yawObject.add( pitchObject );
 
 	var PI_2 = Math.PI / 2;
