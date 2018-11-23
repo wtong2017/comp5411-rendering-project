@@ -127,7 +127,7 @@ var lightBall = new THREE.Mesh(
 // create a point light
 var pointLight = new THREE.PointLight(0xF8D898);
 pointLight.intensity = 1;
-pointLight.distance = 1000;
+pointLight.distance = 100;
 pointLight.castShadow = true;
 
 lightBall.add(pointLight)
@@ -142,17 +142,41 @@ ball.castShadow = true;
 // add the sphere to the scene
 scene.add(ball);
 
+// Sun
+var lightBall2 = new THREE.Mesh(
+  new THREE.SphereGeometry(radius,
+  segments,
+  rings),
+  sphereMaterial);
+// create a point light
+var sun = new THREE.PointLight(0xF8D898);
+sun.intensity = 1;
+sun.distance = 1000;
+sun.castShadow = true;
+// create center
+var pivotPoint = new THREE.Object3D();
+lightBall2.add(sun)
+lightBall2.position.y = 100;
+pivotPoint.add(lightBall2);
+
+function rotateAround(pivotPoint, speed) {
+  pivotPoint.rotation.x += speed;
+}
+scene.add(pivotPoint);
+
 // AmbientLight
 var light = new THREE.AmbientLight( 0x404040 ); // soft white light
 scene.add(light);
 
 // Ground
 var ground = new Physijs.BoxMesh(
-    new THREE.CubeGeometry( 1000, 1, 1000 ),
-    new THREE.MeshBasicMaterial({ color: 0x888888 }),
+    new THREE.CubeGeometry( 800, 1, 800 ),
+    new THREE.MeshPhongMaterial({ color: 0x888888 }),
     0
 );
 ground.position.y = -11;
+ground.receiveShadow = true;
+ground.castShadow = true;
 scene.add( ground );
 // scene, floorWidth, floorHeight, wallHeight, thickness
 buildRoom(scene, 100, 100, 20, 1);
@@ -193,6 +217,8 @@ function draw()
     renderer.render(scene, camera);
 
     controls.update();
+
+    rotateAround(pivotPoint, 0.005);
 
     // loop the draw() function
     requestAnimationFrame(draw);
