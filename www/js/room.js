@@ -82,7 +82,7 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness, pos) {
     var frontDoors = [new Window(10, doorHeight, thickness, [0, 0, -(wallHeight-doorHeight)/2])]; // NOTE: Since the floor is originally horizontal, we need to modify the z axis for the position of height
     frontDoors.push(new Window(10, 10, thickness, [-20, 0, 0])); // Add a window
     frontDoors.push(new Window(10, 10, thickness, [20, 0, 0])); // Add a window
-    var front = buildWall(floorWidth, wallHeight, thickness, [pos[0], pos[1] + (wallHeight + thickness)/2, pos[2]+(floorHeight + thickness)/2], [-Math.PI / 2, 0, 0], 0xffffff, frontDoors);
+    var front = buildWall(floorWidth, wallHeight, thickness, [pos[0], pos[1] + (wallHeight + thickness)/2, pos[2]+(floorHeight - thickness)/2], [-Math.PI / 2, 0, 0], 0xffffff, frontDoors);
     var backWindows = [];
     var numOfWindow = 2;
     for (let i = 0; i < numOfWindow; i++) {
@@ -92,9 +92,9 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness, pos) {
         window.createMesh(new THREE.MeshLambertMaterial({ color: 0xffffff, transparent: true, opacity: 0.3, envMap: reflectionCube }))
         backWindows.push(window);
     }
-    var back = buildWall(floorWidth, wallHeight, thickness, [pos[0], pos[1] + (wallHeight + thickness)/2, pos[2]-(floorHeight + thickness)/2], [Math.PI / 2, 0, 0], 0xffffff, backWindows);
-    var right = buildWall(wallHeight, floorHeight, thickness, [pos[0]+(floorWidth + thickness)/2, pos[1]+ (wallHeight + thickness)/2, pos[2]], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
-    var left = buildWall(wallHeight, floorHeight, thickness, [pos[0]-(floorWidth + thickness)/2, pos[1]+ (wallHeight + thickness)/2, pos[2]], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
+    var back = buildWall(floorWidth, wallHeight, thickness, [pos[0], pos[1] + (wallHeight + thickness)/2, pos[2]-(floorHeight - thickness)/2], [Math.PI / 2, 0, 0], 0xffffff, backWindows);
+    var right = buildWall(wallHeight, floorHeight-thickness*2, thickness, [pos[0]+(floorWidth - thickness)/2, pos[1]+ (wallHeight + thickness)/2, pos[2]], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
+    var left = buildWall(wallHeight, floorHeight-thickness*2, thickness, [pos[0]-(floorWidth - thickness)/2, pos[1]+ (wallHeight + thickness)/2, pos[2]], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
   
     bottom.receiveShadow = true;
     bottom.castShadow = true; 
@@ -116,11 +116,12 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness, pos) {
     right.name = 'right';
     left.name = 'left';
 
-    scene.add( bottom );
-    scene.add( top );
-    scene.add( front );
-    scene.add( back );
-    scene.add( right );
-    scene.add( left );
-    return [bottom, top, front, back, right, left]
+    var room = new THREE.Object3D();
+    room.add( bottom );
+    room.add( top );
+    room.add( front );
+    room.add( back );
+    room.add( right );
+    room.add( left );
+    return room
 }

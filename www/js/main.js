@@ -3,6 +3,11 @@
 Physijs.scripts.worker = '/js/lib/physi/physijs_worker.js';
 Physijs.scripts.ammo = '../ammo/ammo.js'; // latest ammo.js is not working, we have to use the ammo.js provided in physijs examples
 
+// set up stats
+var stats = new Stats();
+stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
+
 // set the scene size
 var WIDTH = window.innerWidth,
 HEIGHT = window.innerHeight;
@@ -184,7 +189,8 @@ var ground = new Physijs.BoxMesh(
 ground.receiveShadow = true;
 scene.add( ground );
 // scene, floorWidth, floorHeight, wallHeight, thickness
-buildRoom(scene, 100, 100, 20, 1, [0,1,0]);
+var room = buildRoom(scene, 100, 100, 20, 1, [0,1,0]);
+scene.add(room);
 
 function setup()
 {
@@ -216,15 +222,17 @@ scene.add( controls.getObject() );
 
 function draw()
 {  
-    scene.simulate(); // run physics
+  stats.begin();
+  scene.simulate(); // run physics
 
-    // draw THREE.JS scene
-    renderer.render(scene, camera);
-
-    controls.update();
-
-    rotateAround(pivotPoint, 0.005);
-
-    // loop the draw() function
-    requestAnimationFrame(draw);
+  rotateAround(pivotPoint, 0.005);
+  
+  // draw THREE.JS scene
+  renderer.render(scene, camera);
+  stats.end();
+  
+  controls.update();
+  
+  // loop the draw() function
+  requestAnimationFrame(draw);
 }

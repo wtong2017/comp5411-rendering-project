@@ -39,9 +39,10 @@
 				text-align: center;
 				cursor: pointer;
 			}
-			#instructions {
+			#message {
 				position: absolute;
-				top: 0;
+				width: 100%;
+				text-align: center;
 			}
 			.dot {
 				height: 10px;
@@ -59,6 +60,7 @@
 	</head>
 	<body onload='setup();'>
 		<script src='./js/lib/three.min.js'></script>
+		<script src="js/lib/stats.min.js"></script>
 		<script src="js/lib/csg/csg.js"></script>
 		<script src="js/lib/csg/THREE.CSG.js"></script>
 		<script src="/js/lib/physi/physi.js"></script>
