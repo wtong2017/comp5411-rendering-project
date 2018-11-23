@@ -15,11 +15,12 @@ const FAR = 10000;
 
 // create a WebGL renderer, camera
 // and a scene
-var renderer = new THREE.WebGLRenderer();
+var renderer = new THREE.WebGLRenderer({antialias: true});
 
 // start the renderer
 renderer.setSize(WIDTH, HEIGHT);
 renderer.shadowMapEnabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 // renderer.shadowMap.renderReverseSided = false;
 
 // attach the render-supplied DOM element
@@ -131,6 +132,8 @@ var pointLight = new THREE.PointLight(0xF8D898);
 pointLight.intensity = 1;
 pointLight.distance = 100;
 pointLight.castShadow = true;
+pointLight.shadow.mapSize.width = 1024;  // default: 512; higher better
+pointLight.shadow.mapSize.height = 1024; // default: 512; higher better
 
 lightBall.add(pointLight)
 lightBall.position.y = 8;
@@ -179,7 +182,6 @@ var ground = new Physijs.BoxMesh(
 );
 // ground.position.y = -11;
 ground.receiveShadow = true;
-ground.castShadow = true;
 scene.add( ground );
 // scene, floorWidth, floorHeight, wallHeight, thickness
 buildRoom(scene, 100, 100, 20, 1, [0,1,0]);
