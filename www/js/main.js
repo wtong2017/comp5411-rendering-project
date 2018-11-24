@@ -220,8 +220,10 @@ var ground = new Physijs.BoxMesh(
 ground.receiveShadow = true;
 scene.add( ground );
 // scene, floorWidth, floorHeight, wallHeight, thickness
-var room = buildRoom(scene, 100, 100, 20, 1, [0,1,0]);
-scene.add(room);
+var roomComponents = buildRoom(scene, 100, 100, 20, 1, [0,2,0]);
+roomComponents.forEach(component => {
+  scene.add(component);
+});
 
 function setup()
 {

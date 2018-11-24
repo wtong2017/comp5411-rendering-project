@@ -116,12 +116,5 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness, pos) {
     right.name = 'right';
     left.name = 'left';
 
-    var room = new THREE.Object3D();
-    room.add( bottom );
-    room.add( top );
-    room.add( front );
-    room.add( back );
-    room.add( right );
-    room.add( left );
-    return room
+    return [bottom, top, front, back, right, left]
 }
