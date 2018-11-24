@@ -105,7 +105,7 @@ loader.load(
 	}
 );
 
-// load bed
+// load diningtable
 loader.load(
 	// resource URL
 	'objs/dining-table.obj/diningtable.obj',
@@ -113,14 +113,42 @@ loader.load(
 	function ( object ) {
     object.scale.set(.05, .05, .05);
     var box = new THREE.BoxHelper( object, 0xffffff );
-    box.add(object);
-    var box_container = new Physijs.createMaterial(
-      box,
-      0.8, 
-      0.4
-  );
-    scene.add(box_container);
+    // box.add(object);
+    box.geometry.computeBoundingBox();
+    
+    // var bbox = new THREE.Box3().setFromObject(box);
+    // var helper = new THREE.Box3Helper( bbox, 0xffff00 );
+    // scene.add( helper );
+    var bbox = box.geometry.boundingBox;
+    var x = bbox.max.x-bbox.min.x;
+    var y = bbox.max.y-bbox.min.y;
+    var z = bbox.max.z-bbox.min.z;
+    
+    var bsphere = box.geometry.boundingSphere; // Repositiob
+    object.position.x -= bsphere.center.x;
+    object.position.y -= bsphere.center.y;
+    object.position.z -= bsphere.center.z;
+    // console.log(box);
+    // scene.add(box);
+    // var ball = new THREE.Mesh(
+    //   new THREE.SphereGeometry(
+    //     bsphere.radius,32,32),
+    //     new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 }));
+    // ball.position.x = bsphere.center.x;
+    // ball.position.y = bsphere.center.y;
+    // ball.position.z = bsphere.center.z;
+    // scene.add(ball);
 
+    var box_container = new Physijs.BoxMesh(
+      new THREE.CubeGeometry( x, y, z ),
+      // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+      // Uncomment the next line to see the wireframe of the container shape
+      new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
+    );
+    box_container.add(object);
+    box_container.position.x = -10;
+    box_container.position.y = 5;
+    scene.add(box_container);
 	},
 	// called when loading is in progresses
 	function ( xhr ) {
@@ -218,7 +246,7 @@ var ground = new Physijs.BoxMesh(
 );
 // ground.position.y = -11;
 ground.receiveShadow = true;
-scene.add( ground );
+// scene.add( ground );
 // scene, floorWidth, floorHeight, wallHeight, thickness
 var roomComponents = buildRoom(scene, 100, 100, 20, 1, [0,2,0]);
 roomComponents.forEach(component => {
