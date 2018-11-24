@@ -53,13 +53,6 @@ reflectionCube.format = THREE.RGBFormat;
 
 scene.background = reflectionCube;
 
-// add the camera to the scene
-// scene.add(camera);
-
-// set a default position for the camera
-// not doing this somehow messes up shadow rendering
-// camera.position.z = 10;
-
 // instantiate a loader
 var loader = new THREE.OBJLoader();
 
@@ -113,12 +106,8 @@ loader.load(
 	function ( object ) {
     object.scale.set(.05, .05, .05);
     var box = new THREE.BoxHelper( object, 0xffffff );
-    // box.add(object);
     box.geometry.computeBoundingBox();
-    
-    // var bbox = new THREE.Box3().setFromObject(box);
-    // var helper = new THREE.Box3Helper( bbox, 0xffff00 );
-    // scene.add( helper );
+
     var bbox = box.geometry.boundingBox;
     var x = bbox.max.x-bbox.min.x;
     var y = bbox.max.y-bbox.min.y;
@@ -128,16 +117,6 @@ loader.load(
     object.position.x -= bsphere.center.x;
     object.position.y -= bsphere.center.y;
     object.position.z -= bsphere.center.z;
-    // console.log(box);
-    // scene.add(box);
-    // var ball = new THREE.Mesh(
-    //   new THREE.SphereGeometry(
-    //     bsphere.radius,32,32),
-    //     new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 }));
-    // ball.position.x = bsphere.center.x;
-    // ball.position.y = bsphere.center.y;
-    // ball.position.z = bsphere.center.z;
-    // scene.add(ball);
 
     var box_container = new Physijs.BoxMesh(
       new THREE.CubeGeometry( x, y, z ),
@@ -244,9 +223,8 @@ var ground = new Physijs.BoxMesh(
     new THREE.MeshPhongMaterial({ color: 0x888888 }),
     0
 );
-// ground.position.y = -11;
 ground.receiveShadow = true;
-// scene.add( ground );
+scene.add( ground );
 // scene, floorWidth, floorHeight, wallHeight, thickness
 var roomComponents = buildRoom(scene, 100, 100, 20, 1, [0,2,0]);
 roomComponents.forEach(component => {
@@ -259,8 +237,6 @@ function setup()
 }
 
 // Control
-// var controls = new THREE.OrbitControls(camera, renderer.domElement);
-// controls.enablePan = false;
 var blocker = document.getElementById( 'blocker' );
 var instructions = document.getElementById( 'instructions' );
 var aim = document.getElementById('aim');
