@@ -27,6 +27,8 @@ renderer.setSize(WIDTH, HEIGHT);
 renderer.shadowMapEnabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 // renderer.shadowMap.renderReverseSided = false;
+// renderer.shadowMapCullFace = THREE.CullFaceBack;
+// renderer.shadowMapCullFrontFaces = false;
 
 // attach the render-supplied DOM element
 document.body.appendChild(renderer.domElement);
@@ -76,6 +78,7 @@ loader.load(
       if ( child instanceof THREE.Mesh ) {
           // child.material.map = texture;
           child.castShadow = true;
+          child.receiveShadow = true;
       }
     } );
     box_container.add(object);
@@ -129,6 +132,7 @@ loader.load(
       if ( child instanceof THREE.Mesh ) {
           // child.material.map = texture;
           child.castShadow = true;
+          child.receiveShadow = true;
       }
     } );
 
@@ -171,25 +175,6 @@ var ball = new THREE.Mesh(
   rings),
   sphereMaterial);
 
-// Create a ball with sphere geometry
-var lightBall = new THREE.Mesh(
-  new THREE.SphereGeometry(radius,
-  segments,
-  rings),
-  sphereMaterial);
-
-// create a point light
-var pointLight = new THREE.PointLight(0xF8D898);
-pointLight.intensity = 1;
-pointLight.distance = 100;
-pointLight.castShadow = true;
-pointLight.shadow.mapSize.width = 1024;  // default: 512; higher better
-pointLight.shadow.mapSize.height = 1024; // default: 512; higher better
-
-lightBall.add(pointLight)
-lightBall.position.y = 8;
-scene.add(lightBall)
-
 // set its position
 ball.position.x = -20;
 ball.position.y = 5;
@@ -199,50 +184,37 @@ ball.castShadow = true;
 // add the sphere to the scene
 scene.add(ball);
 
-// Sun
-var lightBall2 = new THREE.Mesh(
-  new THREE.SphereGeometry(radius,
-  segments,
-  rings),
-  sphereMaterial);
-// create a point light
-var sun = new THREE.PointLight(0xF8D898);
-sun.intensity = 1;
-sun.distance = 1000;
-sun.castShadow = true;
-// create center
+// Lighting
+var sun = createDirectionalLight([0, 1000, 0], true);
 var pivotPoint = new THREE.Object3D();
-lightBall2.add(sun)
-lightBall2.position.y = 100;
-pivotPoint.add(lightBall2);
-
-function rotateAround(pivotPoint, speed) {
-  pivotPoint.rotation.x += speed;
-}
+pivotPoint.add(sun);
 scene.add(pivotPoint);
 
+var lightBulb = createPointLight([0, 20, 0], 1, true);
+scene.add(lightBulb);
+var lightBulb2 = createPointLight([-40, 20, 0], 0.5, true);
+scene.add(lightBulb2);
+
 // AmbientLight
-var light = new THREE.AmbientLight( 0x404040 ); // soft white light
-scene.add(light);
+var ambientLight = new THREE.AmbientLight( 0x404040 ); // soft white light
+scene.add(ambientLight);
 
 // Ground
 var ground = new Physijs.BoxMesh(
-    new THREE.CubeGeometry( 800, 1, 800 ),
+    new THREE.CubeGeometry( 1500, 1, 1500 ),
     new THREE.MeshPhongMaterial({ color: 0x888888 }),
     0
 );
 ground.receiveShadow = true;
+ground.castShadow = true;
 scene.add( ground );
-// scene, floorWidth, floorHeight, wallHeight, thickness
-var roomComponents = buildRoom(scene, 100, 100, 20, 1, [0,2,0]);
+
+// Room
+// scene, floorWidth, floorHeight, wallHeight, thickness, position
+var roomComponents = buildRoom(scene, 100, 100, 20, 1, [0,1,0]);
 roomComponents.forEach(component => {
   scene.add(component);
 });
-
-function setup()
-{
-  draw();
-}
 
 // Control
 var blocker = document.getElementById( 'blocker' );
@@ -264,6 +236,15 @@ controls.addEventListener( 'unlock', function () {
   aim.style.display = 'none';
 } );
 scene.add( controls.getObject() );
+
+function rotateAround(pivotPoint, speed) {
+  pivotPoint.rotation.x += speed;
+}
+
+function setup()
+{
+  draw();
+}
 
 function draw()
 {  
