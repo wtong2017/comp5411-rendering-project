@@ -124,6 +124,14 @@ loader.load(
       // Uncomment the next line to see the wireframe of the container shape
       new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
     );
+
+    object.traverse( function ( child ) { // Solve shadow problem: https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
+      if ( child instanceof THREE.Mesh ) {
+          // child.material.map = texture;
+          child.castShadow = true;
+      }
+    } );
+
     box_container.add(object);
     box_container.position.x = -10;
     box_container.position.y = 5;
