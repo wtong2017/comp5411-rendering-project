@@ -190,11 +190,6 @@ var pivotPoint = new THREE.Object3D();
 pivotPoint.add(sun);
 scene.add(pivotPoint);
 
-var lightBulb = createPointLight([0, 20, 0], 1, true);
-scene.add(lightBulb);
-var lightBulb2 = createPointLight([-40, 20, 0], 0.5, true);
-scene.add(lightBulb2);
-
 // AmbientLight
 var ambientLight = new THREE.AmbientLight( 0x404040 ); // soft white light
 scene.add(ambientLight);

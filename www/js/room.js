@@ -83,15 +83,18 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness, pos) {
     frontDoors.push(new Window(10, 10, thickness, [-20, 0, 0])); // Add a window
     frontDoors.push(new Window(10, 10, thickness, [20, 0, 0])); // Add a window
     var front = buildWall(floorWidth, wallHeight, thickness, [pos[0], pos[1] + (wallHeight + thickness)/2, pos[2]+(floorHeight - thickness)/2], [-Math.PI / 2, 0, 0], 0xffffff, frontDoors);
-    var backWindows = [];
-    var numOfWindow = 2;
-    for (let i = 0; i < numOfWindow; i++) {
-        var windowPos = [0, 0, 0];
-        windowPos[0] = 0 - floorWidth/2 + floorWidth/(numOfWindow+1)*(i+1);
-        var window = new Window(10, 10, thickness/4, windowPos);
-        window.createMesh(new THREE.MeshLambertMaterial({ color: 0xffffff, transparent: true, opacity: 0.3, envMap: reflectionCube }))
-        backWindows.push(window);
-    }
+    var window = new Window(10, 10, thickness/4, [-floorWidth/2 + floorWidth/3, 0, 0]);
+    window.createMesh(new THREE.MeshLambertMaterial({ color: 0xffffff, transparent: true, opacity: 0.3}))
+    var backWindows = [window];
+    backWindows.push(new Window(10, doorHeight, thickness, [pos[0]+(floorWidth-50)/2, 0, (wallHeight-doorHeight)/2])) // add a door
+    // var numOfWindow = 2;
+    // for (let i = 0; i < numOfWindow; i++) {
+    //     var windowPos = [0, 0, 0];
+    //     windowPos[0] = 0 - floorWidth/2 + floorWidth/(numOfWindow+1)*(i+1);
+    //     var window = new Window(10, 10, thickness/4, windowPos);
+    //     window.createMesh(new THREE.MeshLambertMaterial({ color: 0xffffff, transparent: true, opacity: 0.3}))
+    //     backWindows.push(window);
+    // }
     var back = buildWall(floorWidth, wallHeight, thickness, [pos[0], pos[1] + (wallHeight + thickness)/2, pos[2]-(floorHeight - thickness)/2], [Math.PI / 2, 0, 0], 0xffffff, backWindows);
     var right = buildWall(wallHeight, floorHeight-thickness*2, thickness, [pos[0]+(floorWidth - thickness)/2, pos[1]+ (wallHeight + thickness)/2, pos[2]], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
     var left = buildWall(wallHeight, floorHeight-thickness*2, thickness, [pos[0]-(floorWidth - thickness)/2, pos[1]+ (wallHeight + thickness)/2, pos[2]], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
@@ -115,6 +118,63 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness, pos) {
     back.name = 'back';
     right.name = 'right';
     left.name = 'left';
+
+    // TODO: merge all components together, otherwise the light will appear between walls
+    resultComponents = [bottom, top, front, back, right, left];
+    
+    smallRoomComponents = buildSmallRoom(50, 50, wallHeight, thickness, [pos[0]+(floorWidth-50)/2,pos[1],pos[2]-(floorHeight+50)/2]);
+    smallRoomComponents.forEach(component => {
+        resultComponents.push(component)
+    });
+
+    
+    var lightBulb = createPointLight([pos[0], wallHeight+pos[1], pos[2]], 1, 70, true);
+    scene.add(lightBulb);
+    var lightBulb2 = createPointLight([-40, wallHeight+pos[1], 0], 0.5, 50, true);
+    scene.add(lightBulb2);
+
+    return resultComponents;
+}
+
+
+function buildSmallRoom(floorWidth, floorHeight, wallHeight, thickness, pos) {
+    // Floor 
+    var bottom = buildFloor(floorWidth, floorHeight, thickness, pos, [0, 0, 0], 0xffffff);
+  
+    // Cover
+    var top = buildFloor(floorWidth, floorHeight, thickness, [pos[0], pos[1] + wallHeight + thickness, pos[2]], [0, 0, 0], 0xffffff);
+  
+    // Walls
+    var doorHeight = 15
+    var frontDoors = [new Window(10, doorHeight, thickness, [0, 0, -(wallHeight-doorHeight)/2])]; // NOTE: Since the floor is originally horizontal, we need to modify the z axis for the position of height
+    var front = buildWall(floorWidth, wallHeight, thickness, [pos[0], pos[1] + (wallHeight + thickness)/2, pos[2]+(floorHeight - thickness)/2], [-Math.PI / 2, 0, 0], 0xffffff, frontDoors);
+    var backWindows = [];
+    var numOfWindow = 1;
+    for (let i = 0; i < numOfWindow; i++) {
+        var windowPos = [0, 0, 0];
+        windowPos[0] = 0 - floorWidth/2 + floorWidth/(numOfWindow+1)*(i+1);
+        var window = new Window(10, 10, thickness/4, windowPos);
+        backWindows.push(window);
+    }
+    var back = buildWall(floorWidth, wallHeight, thickness, [pos[0], pos[1] + (wallHeight + thickness)/2, pos[2]-(floorHeight - thickness)/2], [Math.PI / 2, 0, 0], 0xffffff, backWindows);
+    var right = buildWall(wallHeight, floorHeight-thickness*2, thickness, [pos[0]+(floorWidth - thickness)/2, pos[1]+ (wallHeight + thickness)/2, pos[2]], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
+    var left = buildWall(wallHeight, floorHeight-thickness*2, thickness, [pos[0]-(floorWidth - thickness)/2, pos[1]+ (wallHeight + thickness)/2, pos[2]], [0, 0, Math.PI / 2], 0xffffff, [new Window(10, 10, thickness, [0,0,0])]);
+  
+    bottom.receiveShadow = true;
+    bottom.castShadow = true; 
+    top.receiveShadow = true;
+    top.castShadow = true; 
+    front.receiveShadow = true;
+    front.castShadow = true; 
+    back.receiveShadow = true;
+    back.castShadow = true; 
+    right.receiveShadow = true;
+    right.castShadow = true; 
+    left.receiveShadow = true;
+    left.castShadow = true;
+
+    var lightBulb = createPointLight([pos[0], wallHeight+pos[1], pos[2]], 1, 50, true);
+    scene.add(lightBulb);
 
     return [bottom, top, front, back, right, left]
 }

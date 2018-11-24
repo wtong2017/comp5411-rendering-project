@@ -21,11 +21,11 @@ function createDirectionalLight(pos, needHelper) {
     return directionalLight;
 }
 
-function createPointLight(pos, intensity, needHelper) {
+function createPointLight(pos, intensity, distance, needHelper) {
     // create a point light
     var pointLight = new THREE.PointLight(0xF8D898);
     pointLight.intensity = intensity;
-    pointLight.distance = 100;
+    pointLight.distance = distance;
     pointLight.castShadow = true;
     pointLight.shadow.mapSize.width = 1024;  // default: 512; higher better
     pointLight.shadow.mapSize.height = 1024; // default: 512; higher better
