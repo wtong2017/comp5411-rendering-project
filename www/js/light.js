@@ -3,7 +3,7 @@ function createDirectionalLight(pos, needHelper) {
     // create directional light
     var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
     directionalLight.castShadow = true;
-    directionalLight.shadowMapWidth = directionalLight.shadowMapHeight = 1024*2;
+    directionalLight.shadowMapWidth = directionalLight.shadowMapHeight = 1024; // 1024*2
     directionalLight.position.set(pos[0], pos[1], pos[2]);
     // control the shadow
     var d = 100;
@@ -16,6 +16,8 @@ function createDirectionalLight(pos, needHelper) {
     // show the light
     if (needHelper) {
         var helper = new THREE.CameraHelper( directionalLight.shadow.camera );
+        helper.visible = false;
+        helpers.push(helper);
         scene.add( helper );
     }
     return directionalLight;
@@ -33,6 +35,8 @@ function createPointLight(pos, intensity, distance, needHelper) {
 
     if (needHelper) {
         var helper = new THREE.CameraHelper( pointLight.shadow.camera );
+        helper.visible = false;
+        helpers.push(helper);
         scene.add( helper );
     }
     return pointLight;
