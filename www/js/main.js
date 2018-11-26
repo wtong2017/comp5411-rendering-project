@@ -92,6 +92,7 @@ obj_loader.load(
     box_container.position.x = 10;
     box_container.position.y = 5;
     scene.add(box_container);
+    dragableObjects.push(box_container);
 		// scene.add( object );
 	},
 	// called when loading is in progresses
@@ -156,6 +157,7 @@ obj_loader.load(
     box_container.position.x = -10;
     box_container.position.y = 5;
     scene.add(box_container);
+    dragableObjects.push(box_container);
 	},
 	// called when loading is in progresses
 	function ( xhr ) {
@@ -218,6 +220,7 @@ new THREE.MTLLoader().setPath( 'objs/bed1/')
         box_container.add(object);
         box_container.position.set(22, 5, -85 );
         scene.add(box_container);
+        dragableObjects.push(box_container);
     }, undefined, undefined);
 });
 
@@ -272,6 +275,7 @@ new THREE.MTLLoader().setPath( 'objs/MilesDeskWithFileObj/')
         box_container.add(object);
         box_container.position.set(10, 5, -15 );
         scene.add(box_container);
+        dragableObjects.push(box_container);
     }, undefined, undefined);
 });
 
@@ -352,6 +356,14 @@ controls.addEventListener( 'unlock', function () {
   aim.style.display = 'none';
 } );
 scene.add( controls.getObject() );
+
+// Drag control
+var dragableObjects = [];
+// scene.children.forEach(object => {
+//   if (object.name == 'container')
+//     dragableObjects.push(object);
+// }); // This won't work because the container objects are loaded after this line of code. Therefore, we need to add it to the array when the object is loaded above.
+var dragControls = new THREE.DragControls( dragableObjects, camera, renderer.domElement );
 
 function rotateAround(pivotPoint, speed) {
   pivotPoint.rotation.x += speed;

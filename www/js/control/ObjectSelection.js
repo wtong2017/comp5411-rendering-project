@@ -4,6 +4,7 @@ var mouse = new THREE.Vector2();
 var raycaster = new THREE.Raycaster();
 // var originalColor = null;
 var selectedObject = null;
+var picking = false;
 var message = document.getElementById('message');
 var selectMessage = 'You are picking object ';
 var noSelectMessage = 'Nothing'
@@ -11,6 +12,7 @@ var noSelectMessage = 'Nothing'
 function onMouseDown( event ) {
 	switch ( event.button ) {
 		case 0: // left
+			picking = true;
 			// update the picking ray with the camera and mouse position
 			raycaster.setFromCamera( mouse, camera );
 			// calculate objects intersecting the picking ray
@@ -38,5 +40,17 @@ function onMouseDown( event ) {
 	}
 }
 
+// function onMouseMove( event ) {
+// 	if (picking) {
+// 		console.log('moving');
+
+// 	}
+// }
+
+// function onMouseUp( event ) {
+// 	picking = false;
+// }
+
 window.addEventListener( 'mousedown', onMouseDown, false );
 // window.addEventListener( 'mousemove', onMouseMove, false );
+// window.addEventListener( 'mouseup', onMouseUp, false );
