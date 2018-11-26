@@ -80,9 +80,10 @@ obj_loader.load(
         // Uncomment the next line to see the wireframe of the container shape
         new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
     );
+    box_container.name = "container";
     object.traverse( function ( child ) { // Solve shadow problem: https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
       if ( child instanceof THREE.Mesh ) {
-          // child.material.map = texture;
+          child.material = new THREE.MeshPhongMaterial({ color: 0x228B22 });
           child.castShadow = true;
           child.receiveShadow = true;
       }
@@ -136,6 +137,7 @@ obj_loader.load(
       // Uncomment the next line to see the wireframe of the container shape
       new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
     );
+    box_container.name = "container";
 
     var texture = tex_loader.load('objs/dining-table.obj/texture.jpg');
 
@@ -200,6 +202,7 @@ new THREE.MTLLoader().setPath( 'objs/bed1/')
           // Uncomment the next line to see the wireframe of the container shape
           new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
         );
+        box_container.name = "container";
 
         var texture = tex_loader.load('objs/bed1/texutre/M209-06.jpg');
 
@@ -250,6 +253,7 @@ new THREE.MTLLoader().setPath( 'objs/MilesDeskWithFileObj/')
         // Uncomment the next line to see the wireframe of the container shape
         new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
       );
+      box_container.name = "container";
 
         var texture = tex_loader.load('objs/MilesDeskWithFileObj/MilesDeskWithFile_Diffuce.jpg');
         var spec = tex_loader.load('objs/MilesDeskWithFileObj/MilesDeskWithFile_SPEC.jpg');
