@@ -257,6 +257,9 @@ new THREE.MTLLoader().setPath( 'objs/MilesDeskWithFileObj/')
 
         object.traverse(function(child) {
             if (child instanceof THREE.Mesh){
+                child.castShadow = true;
+                child.receiveShadow = true;
+
                 child.material.map = texture;
                 child.material.specularMap = spec;
                 child.material.bumpMap = bump;
