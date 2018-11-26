@@ -16,16 +16,18 @@ function onMouseDown( event ) {
 			// calculate objects intersecting the picking ray
 			var intersects = raycaster.intersectObjects( scene.children, true ); // Allow recursion
 			if (intersects.length > 0) {
-				if (selectedObject != null) {
-					console.log(selectedObject)
-					console.log(originalColor);
-					selectedObject.material.color.set( originalColor ); // Unselect the selected object
+				if (intersects[0].distance <= 10) {
+					if (selectedObject != null) {
+						// console.log(selectedObject)
+						// console.log(originalColor);
+						selectedObject.material.color.set( originalColor ); // Unselect the selected object
+					}
+					selectedObject = intersects[0].object;
+					message.textContent = selectMessage + selectedObject.name;
+					// Save the color
+					originalColor = selectedObject.material.color.getHex();
+					selectedObject.material.color.set( 0xff0000 ); // First intersect object
 				}
-				selectedObject = intersects[0].object;
-				message.textContent = selectMessage + selectedObject.name;
-				// Save the color
-				originalColor = selectedObject.material.color.getHex();
-				selectedObject.material.color.set( 0xff0000 ); // First intersect object
 			}
 			// for ( var i = 0; i < intersects.length; i++ ) {
 			//   intersects[ i ].object.material.color.set( 0xff0000 );
@@ -35,8 +37,10 @@ function onMouseDown( event ) {
 			break;
 		case 2: // right
 			// Unselect the selected object
-			selectedObject.material.color.set( originalColor ); // Unselect the selected object
-			selectedObject = null;
+			if (selectedObject) {
+				selectedObject.material.color.set( originalColor ); // Unselect the selected object
+				selectedObject = null;
+			}
 			message.textContent = noSelectMessage;
 			break;
 	}
