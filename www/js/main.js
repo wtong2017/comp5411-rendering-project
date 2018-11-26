@@ -55,10 +55,16 @@ reflectionCube.format = THREE.RGBFormat;
 
 scene.background = reflectionCube;
 
-// instantiate a loader
-var loader = new THREE.OBJLoader();
 
-loader.load(
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// load objs
+//////////////////////////////////////////////////////////////////////////////////////////////
+// instantiate a loader
+var obj_loader = new THREE.OBJLoader();
+var tex_loader = new THREE.TextureLoader();
+
+obj_loader.load(
 	// resource URL
 	'objs/table.obj',
 	// called when resource is loaded
@@ -102,12 +108,15 @@ loader.load(
 );
 
 // load diningtable
-loader.load(
+obj_loader.load(
 	// resource URL
 	'objs/dining-table.obj/diningtable.obj',
 	// called when resource is loaded
 	function ( object ) {
-    object.scale.set(.05, .05, .05);
+
+    // add texture
+
+    object.scale.set(.07, .07, .07);
     var box = new THREE.BoxHelper( object, 0xffffff );
     box.geometry.computeBoundingBox();
 
@@ -128,11 +137,16 @@ loader.load(
       new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
     );
 
+    var texture = tex_loader.load('objs/dining-table.obj/texture.jpg');
+
     object.traverse( function ( child ) { // Solve shadow problem: https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
       if ( child instanceof THREE.Mesh ) {
           // child.material.map = texture;
           child.castShadow = true;
           child.receiveShadow = true;
+          // load texture
+          child.material.map = texture;
+          child.material.bumpMap = texture;
       }
     } );
 
@@ -154,6 +168,30 @@ loader.load(
 
 	}
 );
+
+// load bed
+new THREE.MTLLoader().setPath( 'objs/bed1/')
+.load('Bed08.mtl', function(materials){
+    materials.preload();
+
+    new THREE.OBJLoader()
+    .setMaterials(materials)
+    .setPath('objs/bed1/')
+    .load('Bed08.obj', function(object){
+        object.scale.set(0.1, 0.1, 0.1);
+        object.position.set(100, 100, 100);
+
+        var texture = tex_loader.load('objs/bed1/texutre/M209-06.jpg');
+
+        object.traverse(function(child) {
+            if (child instanceof THREE.Mesh){
+                child.material.map = texture;
+            }
+        });
+        scene.add( object );
+    }, undefined, undefined);
+});
+
 
 // set up the sphere vars
 // lower 'segment' and 'ring' values will increase performance

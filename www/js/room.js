@@ -130,7 +130,7 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness, pos) {
     
     var lightBulb = createPointLight([pos[0], wallHeight+pos[1], pos[2]], 1, 70, true);
     scene.add(lightBulb);
-    var lightBulb2 = createPointLight([-40, wallHeight+pos[1], 0], 0.5, 50, true);
+    var lightBulb2 = createPointLight([-40, wallHeight+pos[1], 0], 1, 50, true);
     scene.add(lightBulb2);
 
     return resultComponents;
