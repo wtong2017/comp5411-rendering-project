@@ -178,17 +178,93 @@ new THREE.MTLLoader().setPath( 'objs/bed1/')
     .setMaterials(materials)
     .setPath('objs/bed1/')
     .load('Bed08.obj', function(object){
-        object.scale.set(0.1, 0.1, 0.1);
-        object.position.set(100, 100, 100);
+        object.scale.set(0.0075, 0.0075, 0.0075);
+        // object.position.set(15, 2, -96 );
+
+        var box = new THREE.BoxHelper( object, 0xffffff );
+        box.geometry.computeBoundingBox();
+    
+        var bbox = box.geometry.boundingBox;
+        var x = bbox.max.x-bbox.min.x;
+        var y = bbox.max.y-bbox.min.y;
+        var z = bbox.max.z-bbox.min.z;
+        
+        var bsphere = box.geometry.boundingSphere; // Repositiob
+        object.position.x -= bsphere.center.x;
+        object.position.y -= bsphere.center.y;
+        object.position.z -= bsphere.center.z;
+
+        var box_container = new Physijs.BoxMesh(
+          new THREE.CubeGeometry( x, y, z ),
+          // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+          // Uncomment the next line to see the wireframe of the container shape
+          new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
+        );
 
         var texture = tex_loader.load('objs/bed1/texutre/M209-06.jpg');
 
         object.traverse(function(child) {
             if (child instanceof THREE.Mesh){
-                child.material.map = texture;
+              child.castShadow = true;
+              child.receiveShadow = true;
+
+              child.material.map = texture;
             }
         });
-        scene.add( object );
+
+        box_container.add(object);
+        box_container.position.set(22, 5, -85 );
+        scene.add(box_container);
+    }, undefined, undefined);
+});
+
+// load desk
+new THREE.MTLLoader().setPath( 'objs/MilesDeskWithFileObj/')
+.load('MilesDeskWithFile.mtl', function(materials){
+    materials.preload();
+
+    new THREE.OBJLoader()
+    .setMaterials(materials)
+    .setPath('objs/MilesDeskWithFileObj/')
+    .load('MilesDeskWithFile.obj', function(object){
+
+      object.scale.set(0.1, 0.1, 0.1);
+      
+
+      var box = new THREE.BoxHelper( object, 0xffffff );
+      box.geometry.computeBoundingBox();
+  
+      var bbox = box.geometry.boundingBox;
+      var x = bbox.max.x-bbox.min.x;
+      var y = bbox.max.y-bbox.min.y;
+      var z = bbox.max.z-bbox.min.z;
+      
+      var bsphere = box.geometry.boundingSphere; // Repositiob
+      object.position.x -= bsphere.center.x;
+      object.position.y -= bsphere.center.y;
+      object.position.z -= bsphere.center.z;
+
+      var box_container = new Physijs.BoxMesh(
+        new THREE.CubeGeometry( x, y, z ),
+        // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+        // Uncomment the next line to see the wireframe of the container shape
+        new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
+      );
+
+        var texture = tex_loader.load('objs/MilesDeskWithFileObj/MilesDeskWithFile_Diffuce.jpg');
+        var spec = tex_loader.load('objs/MilesDeskWithFileObj/MilesDeskWithFile_SPEC.jpg');
+        var bump = tex_loader.load('objs/MilesDeskWithFileObj/MilesDeskWithFileNrmMap_Normal_Bump.jpg');
+
+        object.traverse(function(child) {
+            if (child instanceof THREE.Mesh){
+                child.material.map = texture;
+                child.material.specularMap = spec;
+                child.material.bumpMap = bump;
+            }
+        });
+        box_container.add(object);
+        box_container.position.set(10, 5, -15 );
+        scene.add(box_container);
     }, undefined, undefined);
 });
 
