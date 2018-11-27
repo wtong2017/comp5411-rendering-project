@@ -38,9 +38,11 @@ var camera = new THREE.PerspectiveCamera(
     ASPECT,
     NEAR,
     FAR);
-// camera.rotation.order = "YXZ"; // Rotation along y-axis will be correct, other will be wrong
 
 var scene = new Physijs.Scene;
+
+// var cubeCamera = new THREE.CubeCamera(0.1, 1000, 256);
+// scene.add(cubeCamera);
 
 // skybox
 var path = "skybox/ThickCloudsWater/ThickCloudsWater";
@@ -147,15 +149,23 @@ function rotateAround(pivotPoint, speed) {
   pivotPoint.rotation.x += speed;
 }
 
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
 function setup()
 {
   draw();
+  window.onresize = onWindowResize;
 }
 
 function draw()
 {  
   stats.begin();
   scene.simulate(); // run physics
+  // cubeCamera.update( renderer, scene );
 
   rotateAround(pivotPoint, 0.005);
   
