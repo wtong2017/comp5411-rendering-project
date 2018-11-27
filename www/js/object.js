@@ -35,9 +35,9 @@ function loadObjects() {
             var z = bbox.max.z-bbox.min.z;
             var box_container = new Physijs.BoxMesh(
                 new THREE.CubeGeometry( x, y, z ),
-                // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+                new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
                 // Uncomment the next line to see the wireframe of the container shape
-                new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
+                // new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
             );
             box_container.name = "container";
             object.traverse( function ( child ) { // Solve shadow problem: https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
@@ -94,8 +94,8 @@ function loadObjects() {
 
             var box_container = new Physijs.CylinderMesh(
                 new THREE.CylinderGeometry( x/2, x/3, y, 32 ), // x/3 is guessing
-                new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 }),
-                // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+                // new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 }),
+                new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
             );
         
             // var box_container = new Physijs.BoxMesh(
@@ -168,9 +168,9 @@ function loadObjects() {
     
             var box_container = new Physijs.BoxMesh(
               new THREE.CubeGeometry( x, y, z ),
-              // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+              new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
               // Uncomment the next line to see the wireframe of the container shape
-              new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
+            //   new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
             );
             box_container.name = "container";
     
@@ -221,9 +221,9 @@ function loadObjects() {
 
             var box_container = new Physijs.BoxMesh(
             new THREE.CubeGeometry( x, y, z ),
-            // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+            new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
             // Uncomment the next line to see the wireframe of the container shape
-            new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
+            // new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
             );
             box_container.name = "container";
 
