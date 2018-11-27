@@ -53,6 +53,36 @@
 				background-color: rgb(0, 0, 0);
 				color: #ffffff;
 			}
+			#loading {
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				background-color: rgb(0, 0, 0);
+				color: #ffffff;
+				/* z-index: 1; */
+				top: 0;
+				text-align: center;
+			}
+			.container {
+				position: absolute;
+				margin: auto;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				width: 50%;
+				height: 50%;
+			}
+			#progressBar {
+				height: 30px;
+				width: 100%;
+				background-color: grey;
+			}
+			#progress {
+				width: 0%;
+				height: 30px;
+				background-color: green;
+			}
 			.dot {
 				height: 10px;
 				width: 10px;
@@ -95,6 +125,15 @@
 			</div>
 		</div>
 		<div id="aim" class="dot center"></div>
+		<div id="loading">
+			<div class="container">
+				<h1>Loading...</h1>
+				<div id="progressBar">
+					<div id="progress"></div>
+				</div>
+				<h1 id="progressText">0/0</h1>
+			</div>
+		</div>
 		<script src="js/object.js"></script>
 		<script src="js/panel.js"></script>
 		<script src="js/control/ObjectSelection.js"></script>
