@@ -87,17 +87,23 @@ function loadObjects() {
             var y = bbox.max.y-bbox.min.y;
             var z = bbox.max.z-bbox.min.z;
             
-            var bsphere = box.geometry.boundingSphere; // Repositiob
+            var bsphere = box.geometry.boundingSphere; // Reposition
             object.position.x -= bsphere.center.x;
             object.position.y -= bsphere.center.y;
             object.position.z -= bsphere.center.z;
-        
-            var box_container = new Physijs.BoxMesh(
-            new THREE.CubeGeometry( x, y, z ),
-            // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
-            // Uncomment the next line to see the wireframe of the container shape
-            new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
+
+            var box_container = new Physijs.CylinderMesh(
+                new THREE.CylinderGeometry( x/2, x/3, y, 32 ), // x/3 is guessing
+                new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 }),
+                // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
             );
+        
+            // var box_container = new Physijs.BoxMesh(
+            // new THREE.CubeGeometry( x, y, z ),
+            // // new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.0 })
+            // // Uncomment the next line to see the wireframe of the container shape
+            // new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
+            // );
             box_container.name = "container";
         
             var texture = tex_loader.load('objs/dining-table.obj/texture.jpg');
