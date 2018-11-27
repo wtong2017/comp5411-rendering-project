@@ -38,7 +38,7 @@ var camera = new THREE.PerspectiveCamera(
     ASPECT,
     NEAR,
     FAR);
-camera.rotation.order = "YXZ"; // Rotation along y-axis will be correct, other will be wrong
+// camera.rotation.order = "YXZ"; // Rotation along y-axis will be correct, other will be wrong
 
 var scene = new Physijs.Scene;
 

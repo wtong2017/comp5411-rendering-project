@@ -9,6 +9,22 @@ colorpicker.addEventListener( 'change',  ( e ) => {
 
 }, false  );
 
+// For adding new objects
+var newObj = document.getElementById('newObj');
+var addButton = document.getElementById('add');
+addButton.addEventListener("click", (e)=>{
+    switch (newObj.value) {
+        case 'cube':
+            console.log('add cube');
+            addCube();
+            break;
+        case 'sphere':
+            console.log('add sphere');
+            break;
+        default:
+            break;
+    }
+});
 
 // For debug
 var debugCheckbox = document.getElementById("debug");

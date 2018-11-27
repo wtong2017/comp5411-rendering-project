@@ -60,7 +60,7 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 	function onDocumentMouseMove( event ) {
 
-		event.preventDefault();
+		// event.preventDefault();
 
 		// var rect = _domElement.getBoundingClientRect();
 
@@ -122,7 +122,7 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 	function onDocumentMouseDown( event ) {
 
-		event.preventDefault();
+		// event.preventDefault();
 
 		_raycaster.setFromCamera( _mouse, _camera );
 
@@ -150,7 +150,7 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 	function onDocumentMouseCancel( event ) {
 
-		event.preventDefault();
+		// event.preventDefault();
 
 		if ( _selected ) {
 
@@ -166,7 +166,7 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 	function onDocumentTouchMove( event ) {
 
-		event.preventDefault();
+		// event.preventDefault();
 		event = event.changedTouches[ 0 ];
 
 		var rect = _domElement.getBoundingClientRect();
@@ -196,7 +196,7 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 	function onDocumentTouchStart( event ) {
 
-		event.preventDefault();
+		// event.preventDefault();
 		event = event.changedTouches[ 0 ];
 
         var rect = _domElement.getBoundingClientRect();
@@ -234,7 +234,7 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 	function onDocumentTouchEnd( event ) {
 
-		event.preventDefault();
+		// event.preventDefault();
 
 		if ( _selected ) {
 
