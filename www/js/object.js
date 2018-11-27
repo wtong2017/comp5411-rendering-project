@@ -242,3 +242,18 @@ function loadObjects() {
         }, undefined, undefined);
     });
 }
+
+// Add basic objects
+var dist = 5; // create a object 5 units away from camera
+function addCube() {
+    var cameraLookAt = controls.getDirection(new THREE.Vector3()).multiplyScalar(dist);
+    var spwanPoint = cameraLookAt.add(controls.getObject().position);
+    var cube = new Physijs.BoxMesh(
+        new THREE.CubeGeometry( 1, 1, 1 ), // default size is 1, 1, 1
+        new THREE.MeshPhongMaterial({ color: 0xffffff }) // default color is white
+    );
+    console.log(spwanPoint);
+    cube.position.set(spwanPoint.x, spwanPoint.y, spwanPoint.z);
+    scene.add(cube);
+    return cube;
+}
