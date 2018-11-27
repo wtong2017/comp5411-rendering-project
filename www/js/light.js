@@ -32,6 +32,46 @@ function createPointLight(pos, intensity, distance, needHelper) {
     pointLight.shadow.mapSize.width = 1024;  // default: 512; higher better
     pointLight.shadow.mapSize.height = 1024; // default: 512; higher better
     pointLight.position.set(pos[0], pos[1], pos[2]);
+    
+
+    // add light model
+    obj_loader = new THREE.OBJLoader();
+    obj_loader.load(
+        // resource URL
+        'objs/Dani.obj',
+        // called when resource is loaded
+        function ( object ) {
+            finishedCount++;
+            updateProgress();
+
+            object.scale.set(.005, .005, .005);
+            object.position.set(pos[0], pos[1] + 0.4, pos[2]);
+
+            object.traverse( function ( child ) { // Solve shadow problem: https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
+            if ( child instanceof THREE.Mesh ) {
+                child.material = new THREE.MeshPhongMaterial({ color: 0x404040 });
+                // child.castShadow = true;
+                // child.receiveShadow = true;
+
+            }
+            } );
+            scene.add( object );
+        },
+        // called when loading is in progresses
+        function ( xhr ) {
+    
+            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    
+        },
+        // called when loading has errors
+        function ( error ) {
+    
+            console.log( 'An error happened' );
+    
+        }
+    );
+
+
 
     if (needHelper) {
         var helper = new THREE.CameraHelper( pointLight.shadow.camera );
