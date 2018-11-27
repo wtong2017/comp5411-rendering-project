@@ -22,7 +22,7 @@ function loadObjects() {
     
     obj_loader.load(
         // resource URL
-        'objs/table.obj',
+        'objs/table/table.obj',
         // called when resource is loaded
         function ( object ) {
             finishedCount++;
@@ -40,9 +40,10 @@ function loadObjects() {
                 // new THREE.MeshBasicMaterial({ wireframe: true, opacity: 0.5 })
             );
             box_container.name = "container";
+            var texture = tex_loader.load('objs/table/WoodSeemles.jpg'); // Not working
             object.traverse( function ( child ) { // Solve shadow problem: https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
             if ( child instanceof THREE.Mesh ) {
-                child.material = new THREE.MeshPhongMaterial({ color: 0x228B22 });
+                child.material = new THREE.MeshLambertMaterial({ map: texture }); // assume it is a wood table
                 child.castShadow = true;
                 child.receiveShadow = true;
             }
