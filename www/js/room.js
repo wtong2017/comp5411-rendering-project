@@ -79,6 +79,8 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness, pos) {
   
     // Walls
     var doorHeight = 15
+    var doorSpotLight = createSpotLight([pos[0], pos[1] + (wallHeight + thickness + doorHeight)/2, pos[2]+(floorHeight - thickness)/2 + 2], 1, 50, true); // hardcode 2 as the width of the light object
+    scene.add(doorSpotLight);
     var frontDoors = [new Window(10, doorHeight, thickness, [0, 0, -(wallHeight-doorHeight)/2])]; // NOTE: Since the floor is originally horizontal, we need to modify the z axis for the position of height
     frontDoors.push(new Window(10, 10, thickness, [-20, 0, 0])); // Add a window
     frontDoors.push(new Window(10, 10, thickness, [20, 0, 0])); // Add a window
@@ -128,10 +130,14 @@ function buildRoom(scene, floorWidth, floorHeight, wallHeight, thickness, pos) {
     });
 
     
-    var lightBulb = createPointLight([pos[0], wallHeight+pos[1], pos[2]], 1, 70, true);
+    var lightBulb = createPointLight([pos[0]+20, wallHeight+pos[1]+thickness/2, pos[2]], 1, 50, true);
     scene.add(lightBulb);
-    var lightBulb2 = createPointLight([-40, wallHeight+pos[1], 0], 1, 50, true);
+    var lightBulb2 = createPointLight([pos[0]-20, wallHeight+pos[1]+thickness/2, pos[2]], 1, 50, true);
     scene.add(lightBulb2);
+    var lightBulb3 = createPointLight([pos[0], wallHeight+pos[1]+thickness/2, pos[2]+20], 1, 50, true);
+    scene.add(lightBulb3);
+    var lightBulb4 = createPointLight([pos[0], wallHeight+pos[1]+thickness/2, pos[2]-20], 1, 50, true);
+    scene.add(lightBulb4);
 
     return resultComponents;
 }
@@ -173,7 +179,7 @@ function buildSmallRoom(floorWidth, floorHeight, wallHeight, thickness, pos) {
     left.receiveShadow = true;
     left.castShadow = true;
 
-    var lightBulb = createPointLight([pos[0], wallHeight+pos[1], pos[2]], 1, 50, true);
+    var lightBulb = createPointLight([pos[0], wallHeight+pos[1]+thickness/2, pos[2]], 1, 50, true);
     scene.add(lightBulb);
 
     return [bottom, top, front, back, right, left]

@@ -33,7 +33,8 @@ function createPointLight(pos, intensity, distance, needHelper) {
     pointLight.shadow.mapSize.height = 1024; // default: 512; higher better
     pointLight.position.set(pos[0], pos[1], pos[2]);
     
-
+    numOfObject += 1;
+    updateProgress();
     // add light model
     obj_loader = new THREE.OBJLoader();
     obj_loader.load(
@@ -44,14 +45,14 @@ function createPointLight(pos, intensity, distance, needHelper) {
             finishedCount++;
             updateProgress();
 
-            object.scale.set(.005, .005, .005);
-            object.position.set(pos[0], pos[1] + 0.4, pos[2]);
+            object.scale.set(.01, .01, .01);
+            object.position.set(pos[0], pos[1]-0.1, pos[2]);
 
             object.traverse( function ( child ) { // Solve shadow problem: https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
             if ( child instanceof THREE.Mesh ) {
                 child.material = new THREE.MeshPhongMaterial({ color: 0x404040 });
-                // child.castShadow = true;
-                // child.receiveShadow = true;
+                child.castShadow = true;
+                child.receiveShadow = true;
 
             }
             } );
@@ -80,4 +81,74 @@ function createPointLight(pos, intensity, distance, needHelper) {
         scene.add( helper );
     }
     return pointLight;
+}
+
+function createSpotLight(pos, intensity, distance, needHelper) {
+    // create a point light
+    var spotLight = new THREE.SpotLight( 0xffffff );
+    // spotLight.position.set(pos[0], pos[1], pos[2]);
+    spotLight.intensity = intensity;
+    spotLight.distance = distance;
+    spotLight.castShadow = true;
+    spotLight.shadow.mapSize.width = 1024;  // default: 512; higher better
+    spotLight.shadow.mapSize.height = 1024; // default: 512; higher better
+    spotLight.angle = Math.PI/4;
+    spotLight.penumbra = 0.1;
+    spotLight.decay = 1.5;
+
+    var targetObject = new THREE.Object3D();
+    targetObject.position.set(0, -1, 0);
+    targetObject.add(spotLight);
+    targetObject.position.set(pos[0], pos[1], pos[2]);
+    // scene.add(targetObject);
+    spotLight.target = targetObject; // Spotlight points downwards
+    
+    numOfObject += 1;
+    updateProgress();
+    // add light model
+    obj_loader = new THREE.OBJLoader();
+    obj_loader.load(
+        // resource URL
+        'objs/Dani.obj',
+        // called when resource is loaded
+        function ( object ) {
+            finishedCount++;
+            updateProgress();
+
+            object.scale.set(.01, .01, .01);
+            object.position.set(pos[0], pos[1]+0.1, pos[2]);
+
+            object.traverse( function ( child ) { // Solve shadow problem: https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
+            if ( child instanceof THREE.Mesh ) {
+                child.material = new THREE.MeshPhongMaterial({ color: 0x404040 });
+                child.castShadow = true;
+                child.receiveShadow = true;
+
+            }
+            } );
+            scene.add( object );
+        },
+        // called when loading is in progresses
+        function ( xhr ) {
+    
+            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    
+        },
+        // called when loading has errors
+        function ( error ) {
+    
+            console.log( 'An error happened' );
+    
+        }
+    );
+
+
+
+    if (needHelper) {
+        var helper = new THREE.CameraHelper( spotLight.shadow.camera );
+        helper.visible = false;
+        helpers.push(helper);
+        scene.add( helper );
+    }
+    return targetObject;
 }
