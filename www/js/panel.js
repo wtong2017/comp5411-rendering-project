@@ -20,6 +20,15 @@ turnRightButton.addEventListener("click", (e) => {
     selectedObject.__dirtyRotation = true;
 });
 
+var deleteButton = document.getElementById("delete");
+deleteButton.addEventListener("click", (e) => {
+    var toBeDeleted = selectedObject;
+    var index = dragableObjects.findIndex(x => x == selectedObject);
+    if (index != undefined)
+        dragableObjects.splice( index, 1 );
+    selectedObject = null;
+    scene.remove(toBeDeleted);
+});
 
 // For adding new objects
 var newObj = document.getElementById('newObj');
@@ -32,11 +41,27 @@ addButton.addEventListener("click", (e) => {
             break;
         case 'sphere':
             console.log('add sphere');
+            addSphere();
             break;
         default:
             break;
     }
 });
+
+// Light panel
+var lightPanel = document.getElementById("lights");
+function updateLightPanel() {
+    var newId = lights.length-1;
+
+    newChild = '<label for=light"'+newId+'">Light '+newId+'</label><input type="range" id="light'+newId+'" name="light'+newId+'" min="0" max="1" value="1" step="0.01"><br>'
+    lightPanel.insertAdjacentHTML('beforeend', newChild);
+
+    document.addEventListener('change',function(e){
+        if(e.target && e.target.id == 'light'+newId){
+            lights[newId].intensity = e.target.value;
+        }
+    });
+}
 
 // For debug
 var debugCheckbox = document.getElementById("debug");

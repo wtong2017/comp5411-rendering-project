@@ -99,10 +99,13 @@ scene.add(pivotPoint);
 var ambientLight = new THREE.AmbientLight( 0x404040 ); // soft white light
 scene.add(ambientLight);
 
+var hemisphereLight = new THREE.HemisphereLight( 0xffffbb, 0x228B22, 0.1 );
+scene.add( hemisphereLight );
+
 // Ground
 var ground = new Physijs.BoxMesh(
     new THREE.CubeGeometry( 1500, 1, 1500 ),
-    new THREE.MeshPhongMaterial({ color: 0x888888 }),
+    new THREE.MeshPhongMaterial({ color: 0x228B22 }),
     0
 );
 ground.receiveShadow = true;

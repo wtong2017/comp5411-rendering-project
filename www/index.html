@@ -95,7 +95,7 @@
 				top: 50%;
 				left: 50%;
 			}
-			#selectedObj {
+			.section {
 				border: 5px solid #ffffff;
 			}
 		</style>
@@ -116,13 +116,14 @@
 		<div id="panel">
 			<h1 style="text-align:center">Control panel</h1>
 			<div id="message">Nothing</div>
-			<div id="selectedObj" style="display:none">
+			<div id="selectedObj" class="section" style="display:none">
 				<h4 style="text-align:center">Object panel</h4>
 				<label for="color">Color</label>
 				<input type="color" id="color" name="color"></br>
 				<label>Rotation</label>
 				<button id="turnLeft">Turn right</button>
 				<button id="turnRight">Turn left</button></br>
+				<button id='delete'>Delete</button>
 			</div>
 			<label for="newObj">Add a object</label>
 			<select id="newObj">
@@ -130,6 +131,9 @@
 				<option value="sphere">Sphere</option>
 			</select>
 			<button id="add">Add</button></br>
+			<div id="lights" class="section">
+				<h4 style="text-align:center">Light panel</h4>
+			</div>
 			<label for="debug">Debug mode</label>
 			<input type="checkbox" id="debug" name="debug">
 		</div>

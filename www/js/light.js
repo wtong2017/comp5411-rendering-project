@@ -1,3 +1,5 @@
+var lights = []
+
 function createDirectionalLight(pos, needHelper) {
     // Sun
     // create directional light
@@ -32,6 +34,7 @@ function createPointLight(pos, intensity, distance, needHelper) {
     pointLight.shadow.mapSize.width = 1024;  // default: 512; higher better
     pointLight.shadow.mapSize.height = 1024; // default: 512; higher better
     pointLight.position.set(pos[0], pos[1], pos[2]);
+    pointLight.decay = 2; // decay - The amount the light dims along the distance of the light. Default is 1. For physically correct lighting, set this to 2.
     
     numOfObject += 1;
     updateProgress();
@@ -72,14 +75,14 @@ function createPointLight(pos, intensity, distance, needHelper) {
         }
     );
 
-
-
     if (needHelper) {
         var helper = new THREE.CameraHelper( pointLight.shadow.camera );
         helper.visible = false;
         helpers.push(helper);
         scene.add( helper );
     }
+    lights.push(pointLight);
+    updateLightPanel();
     return pointLight;
 }
 
@@ -94,15 +97,17 @@ function createSpotLight(pos, intensity, distance, needHelper) {
     spotLight.shadow.mapSize.height = 1024; // default: 512; higher better
     spotLight.angle = Math.PI/4;
     spotLight.penumbra = 0.1;
-    spotLight.decay = 1.5;
+    spotLight.decay = 2;
 
     var targetObject = new THREE.Object3D();
     targetObject.position.set(0, -1, 0);
     targetObject.add(spotLight);
     targetObject.position.set(pos[0], pos[1], pos[2]);
-    // scene.add(targetObject);
     spotLight.target = targetObject; // Spotlight points downwards
     
+    lights.push(spotLight);
+    updateLightPanel();
+
     numOfObject += 1;
     updateProgress();
     // add light model
@@ -141,8 +146,6 @@ function createSpotLight(pos, intensity, distance, needHelper) {
     
         }
     );
-
-
 
     if (needHelper) {
         var helper = new THREE.CameraHelper( spotLight.shadow.camera );

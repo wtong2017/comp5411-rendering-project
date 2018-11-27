@@ -258,8 +258,22 @@ function addCube() {
         new THREE.CubeGeometry( 1, 1, 1 ), // default size is 1, 1, 1
         new THREE.MeshPhongMaterial({ color: 0xffffff }) // default color is white
     );
-    console.log(spwanPoint);
+    // console.log(spwanPoint);
     cube.position.set(spwanPoint.x, spwanPoint.y, spwanPoint.z);
+    dragableObjects.push(cube);
     scene.add(cube);
     return cube;
+}
+function addSphere() {
+    var cameraLookAt = controls.getDirection(new THREE.Vector3()).multiplyScalar(dist);
+    var spwanPoint = cameraLookAt.add(controls.getObject().position);
+    var sphere = new Physijs.SphereMesh(
+        new THREE.SphereGeometry( 0.5, 64, 64 ),
+        new THREE.MeshPhongMaterial({ color: 0xffffff }) // default color is white
+    );
+    // console.log(spwanPoint);
+    sphere.position.set(spwanPoint.x, spwanPoint.y, spwanPoint.z);
+    scene.add(sphere);
+    dragableObjects.push(sphere);
+    return sphere;
 }
