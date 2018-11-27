@@ -95,6 +95,9 @@
 				top: 50%;
 				left: 50%;
 			}
+			#selectedObj {
+				border: 5px solid #ffffff;
+			}
 		</style>
 	</head>
 	<body onload='setup();'>
@@ -111,9 +114,16 @@
 		<script src="js/light.js"></script>
 		<script src='./js/room.js'></script>
 		<div id="panel">
-			<div id="message">MESSAGE</div>
-			<label for="color">Color</label>
-			<input type="color" id="color" name="color"></br>
+			<h1 style="text-align:center">Control panel</h1>
+			<div id="message">Nothing</div>
+			<div id="selectedObj" style="display:none">
+				<h4 style="text-align:center">Object panel</h4>
+				<label for="color">Color</label>
+				<input type="color" id="color" name="color"></br>
+				<label>Rotation</label>
+				<button id="turnLeft">Turn right</button>
+				<button id="turnRight">Turn left</button></br>
+			</div>
 			<label for="newObj">Add a object</label>
 			<select id="newObj">
 				<option value="cube">Cube</option>
@@ -127,7 +137,7 @@
 			<div id="instructions">
 				<span style="font-size:40px">Click to play</span>
 				<br />
-				(W, A, S, D = Move, E = Up, Q = Down, MOUSE = Look around)
+				W, A, S, D = Move, E = Up, Q = Down, MOUSE = Look around, MOUSE Drag = Move object
 			</div>
 		</div>
 		<div id="aim" class="dot center"></div>

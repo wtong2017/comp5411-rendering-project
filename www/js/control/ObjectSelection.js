@@ -6,8 +6,9 @@ var raycaster = new THREE.Raycaster();
 var selectedObject = null;
 var picking = false;
 var message = document.getElementById('message');
+var selectedObjPanel = document.getElementById('selectedObj');
 var selectMessage = 'You are picking object ';
-var noSelectMessage = 'Nothing'
+var noSelectMessage = 'Nothing';
 
 function onMouseDown( event ) {
 	switch ( event.button ) {
@@ -16,16 +17,18 @@ function onMouseDown( event ) {
 			// update the picking ray with the camera and mouse position
 			raycaster.setFromCamera( mouse, camera );
 			// calculate objects intersecting the picking ray
-			var intersects = raycaster.intersectObjects( scene.children, true ); // Allow recursion
+			// var intersects = raycaster.intersectObjects( scene.children, true ); // Allow recursion
+			var intersects = raycaster.intersectObjects( scene.children );
 			if (intersects.length > 0) {
-				for (let i = 0; i < intersects.length; i++) {
-					var object = intersects[i].object;
-					if (object.name != 'container') {
+				// for (let i = 0; i < intersects.length; i++) {
+					var object = intersects[0].object; // First intersect object
+					// if (object.name != 'container') {
 						selectedObject = object;
 						message.textContent = selectMessage + selectedObject.name;
-						break;
-					}
-				}
+						selectedObjPanel.style.display = 'block';
+						// break;
+					// }
+				// }
 			}
 			break;
 		case 1: // middle
@@ -34,6 +37,7 @@ function onMouseDown( event ) {
 			// Unselect the selected object
 			if (selectedObject) {
 				selectedObject = null;
+				selectedObjPanel.style.display = 'none';
 			}
 			message.textContent = noSelectMessage;
 			break;

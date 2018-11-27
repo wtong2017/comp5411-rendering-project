@@ -1,18 +1,30 @@
-// For selecting object color
+// For selecting object
+// Color
 var colorpicker = document.getElementById("color");
 colorpicker.addEventListener( 'change',  ( e ) => {
-
-    e.preventDefault();
-    
-    if (selectedObject)
-        selectedObject.material.color.set( event.target.value );
-
+    selectedObject.traverse( function ( child ) {
+        if (child instanceof THREE.Mesh && child.name!='container') {
+            child.material.color.set( event.target.value );
+        }
+    } );
 }, false  );
+// Rotation
+var turnLeftButton = document.getElementById("turnLeft");
+var turnRightButton = document.getElementById("turnRight");
+turnLeftButton.addEventListener("click", (e) => {
+    selectedObject.rotation.y -= Math.PI/180;
+    selectedObject.__dirtyRotation = true;
+});
+turnRightButton.addEventListener("click", (e) => {
+    selectedObject.rotation.y += Math.PI/180;
+    selectedObject.__dirtyRotation = true;
+});
+
 
 // For adding new objects
 var newObj = document.getElementById('newObj');
 var addButton = document.getElementById('add');
-addButton.addEventListener("click", (e)=>{
+addButton.addEventListener("click", (e) => {
     switch (newObj.value) {
         case 'cube':
             console.log('add cube');
