@@ -1,11 +1,12 @@
-var lights = []
+var lights = [];
+var shadowMap = 256;
 
 function createDirectionalLight(pos, needHelper) {
     // Sun
     // create directional light
-    var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
     directionalLight.castShadow = true;
-    directionalLight.shadowMapWidth = directionalLight.shadowMapHeight = 1024; // 1024*2
+    directionalLight.shadowMapWidth = directionalLight.shadowMapHeight = shadowMap; // 1024*2
     directionalLight.position.set(pos[0], pos[1], pos[2]);
     // control the shadow
     var d = 100;
@@ -22,6 +23,8 @@ function createDirectionalLight(pos, needHelper) {
         helpers.push(helper);
         scene.add( helper );
     }
+    lights.push(directionalLight);
+    updateLightPanel();
     return directionalLight;
 }
 
@@ -31,8 +34,8 @@ function createPointLight(pos, intensity, distance, needHelper) {
     pointLight.intensity = intensity;
     pointLight.distance = distance;
     pointLight.castShadow = true;
-    pointLight.shadow.mapSize.width = 1024;  // default: 512; higher better
-    pointLight.shadow.mapSize.height = 1024; // default: 512; higher better
+    pointLight.shadow.mapSize.width = shadowMap;  // default: 512; higher better
+    pointLight.shadow.mapSize.height = shadowMap; // default: 512; higher better
     pointLight.position.set(pos[0], pos[1], pos[2]);
     pointLight.decay = 2; // decay - The amount the light dims along the distance of the light. Default is 1. For physically correct lighting, set this to 2.
     
@@ -93,8 +96,8 @@ function createSpotLight(pos, intensity, distance, needHelper) {
     spotLight.intensity = intensity;
     spotLight.distance = distance;
     spotLight.castShadow = true;
-    spotLight.shadow.mapSize.width = 1024;  // default: 512; higher better
-    spotLight.shadow.mapSize.height = 1024; // default: 512; higher better
+    spotLight.shadow.mapSize.width = shadowMap;  // default: 512; higher better
+    spotLight.shadow.mapSize.height = shadowMap; // default: 512; higher better
     spotLight.angle = Math.PI/4;
     spotLight.penumbra = 0.1;
     spotLight.decay = 2;
@@ -154,4 +157,13 @@ function createSpotLight(pos, intensity, distance, needHelper) {
         scene.add( helper );
     }
     return targetObject;
+}
+
+function updateShadowMap() {
+    // https://stackoverflow.com/questions/31856635/how-to-dynamically-update-the-resolution-of-the-shadow-map-in-three-js-when-chan
+    lights.forEach(light => {
+        light.shadow.mapSize.width = light.shadow.mapSize.height = shadowMap;
+        light.shadow.map.dispose(); // important
+        light.shadow.map = null;
+    });
 }

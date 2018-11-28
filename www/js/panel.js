@@ -50,6 +50,11 @@ addButton.addEventListener("click", (e) => {
 
 // Light panel
 var lightPanel = document.getElementById("lights");
+var shadowMapPower = document.getElementById("shadowMapPower");
+shadowMapPower.addEventListener('change', function(e) {
+    shadowMap = Math.pow(2, this.value);
+    updateShadowMap();
+});
 function updateLightPanel() {
     var newId = lights.length-1;
 
