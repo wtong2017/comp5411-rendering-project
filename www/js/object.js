@@ -261,6 +261,8 @@ function addCube() {
     );
     // console.log(spwanPoint);
     cube.position.set(spwanPoint.x, spwanPoint.y, spwanPoint.z);
+    cube.castShadow = true;
+    cube.receiveShadow = true;
     dragableObjects.push(cube);
     scene.add(cube);
     return cube;
@@ -274,6 +276,8 @@ function addSphere() {
     );
     // console.log(spwanPoint);
     sphere.position.set(spwanPoint.x, spwanPoint.y, spwanPoint.z);
+    sphere.castShadow = true;
+    sphere.receiveShadow = true;
     scene.add(sphere);
     dragableObjects.push(sphere);
     return sphere;
