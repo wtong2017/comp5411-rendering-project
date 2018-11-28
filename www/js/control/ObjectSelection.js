@@ -25,7 +25,7 @@ function onMouseDown( event ) {
 					// if (object.name != 'container') {
 						selectedObject = object;
 						message.textContent = selectMessage + selectedObject.name;
-						selectedObjPanel.style.display = 'block';
+						// selectedObjPanel.style.display = 'block';
 						// break;
 					// }
 				// }
@@ -37,7 +37,7 @@ function onMouseDown( event ) {
 			// Unselect the selected object
 			if (selectedObject) {
 				selectedObject = null;
-				selectedObjPanel.style.display = 'none';
+				// selectedObjPanel.style.display = 'none';
 			}
 			message.textContent = noSelectMessage;
 			break;
