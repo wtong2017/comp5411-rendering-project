@@ -49,26 +49,26 @@ addButton.addEventListener("click", (e) => {
 });
 
 // Light panel
-var lightPanel = document.getElementById("lights");
-var shadowMapPower = document.getElementById("shadowMapPower");
-shadowMapPower.addEventListener('change', function(e) {
-    shadowMap = Math.pow(2, this.value);
-    updateShadowMap();
-});
-function updateLightPanel() {
-    var newId = lights.length-1;
+// var lightPanel = document.getElementById("lights");
+// var shadowMapPower = document.getElementById("shadowMapPower");
+// shadowMapPower.addEventListener('change', function(e) {
+//     shadowMap = Math.pow(2, this.value);
+//     updateShadowMap();
+// });
+// function updateLightPanel() {
+//     var newId = lights.length-1;
 
-    var label = lights[newId].name ? lights[newId].name : 'Light'+newId;
+//     var label = lights[newId].name ? lights[newId].name : 'Light'+newId;
 
-    newChild = '<label for=light"'+newId+'">'+label+'</label><input type="range" id="light'+newId+'" name="light'+newId+'" min="0" max="1" value="1" step="0.01"><br>'
-    lightPanel.insertAdjacentHTML('beforeend', newChild);
+//     newChild = '<label for=light"'+newId+'">'+label+'</label><input type="range" id="light'+newId+'" name="light'+newId+'" min="0" max="1" value="1" step="0.01"><br>'
+//     lightPanel.insertAdjacentHTML('beforeend', newChild);
 
-    document.addEventListener('change',function(e){
-        if(e.target && e.target.id == 'light'+newId){
-            lights[newId].intensity = e.target.value;
-        }
-    });
-}
+//     document.addEventListener('change',function(e){
+//         if(e.target && e.target.id == 'light'+newId){
+//             lights[newId].intensity = e.target.value;
+//         }
+//     });
+// }
 
 // For debug
 var debugCheckbox = document.getElementById("debug");
@@ -83,3 +83,28 @@ debugCheckbox.addEventListener( 'change',  ( e ) => {
     });
 
 }, false  );
+
+
+// Create GUI using library
+var gui = new dat.GUI();
+var lightPanel = gui.addFolder('Light Panel');
+var lightSources = lightPanel.addFolder('Light Sources');
+function updateLightPanel() {
+    var newId = lights.length-1;
+
+    var label = lights[newId].name ? lights[newId].name : 'Light'+newId;
+    var guiObj = {intensity: 1}
+
+    var oneLightPanel = lightSources.addFolder(label);
+    oneLightPanel.add(guiObj, 'intensity', 0, 1, 0.01).onChange((value) => {
+        // console.log(value);
+
+        lights[newId].intensity = value;
+    });
+}
+var shadow = lightPanel.addFolder('Shadow');
+var shadowContorl = {"Map power": 7}
+shadow.add(shadowContorl, 'Map power', 6, 11, 1).onChange((value) => {
+    shadowMap = Math.pow(2, value);
+    updateShadowMap();
+});

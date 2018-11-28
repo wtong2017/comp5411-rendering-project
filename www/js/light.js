@@ -1,7 +1,11 @@
 var lights = [];
 var shadowMap = 256;
+// Keep track the number
+var dlCount = 0;
+var plCount = 0;
+var slCount = 0;
 
-function createDirectionalLight(pos, needHelper, name='DirectionalLight') {
+function createDirectionalLight(pos, needHelper, name=null) {
     // Sun
     // create directional light
     var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
@@ -24,12 +28,15 @@ function createDirectionalLight(pos, needHelper, name='DirectionalLight') {
         scene.add( helper );
     }
     directionalLight.name = name;
+    if (!directionalLight.name)
+        directionalLight.name = 'DirectionalLight'+dlCount;
+    dlCount++;
     lights.push(directionalLight);
     updateLightPanel();
     return directionalLight;
 }
 
-function createPointLight(pos, intensity, distance, needHelper, name='PointLight') {
+function createPointLight(pos, intensity, distance, needHelper, name=null) {
     // create a point light
     var pointLight = new THREE.PointLight(0xF8D898);
     pointLight.intensity = intensity;
@@ -40,6 +47,9 @@ function createPointLight(pos, intensity, distance, needHelper, name='PointLight
     pointLight.position.set(pos[0], pos[1], pos[2]);
     pointLight.decay = 2; // decay - The amount the light dims along the distance of the light. Default is 1. For physically correct lighting, set this to 2.
     pointLight.name = name;
+    if (!pointLight.name)
+        pointLight.name = 'PointLight'+plCount;
+    plCount++;
 
     numOfObject += 1;
     updateProgress();
@@ -91,7 +101,7 @@ function createPointLight(pos, intensity, distance, needHelper, name='PointLight
     return pointLight;
 }
 
-function createSpotLight(pos, intensity, distance, needHelper, name='SpotLight') {
+function createSpotLight(pos, intensity, distance, needHelper, name=null) {
     // create a point light
     var spotLight = new THREE.SpotLight( 0xffffff );
     // spotLight.position.set(pos[0], pos[1], pos[2]);
@@ -104,6 +114,9 @@ function createSpotLight(pos, intensity, distance, needHelper, name='SpotLight')
     spotLight.penumbra = 0.1;
     spotLight.decay = 2;
     spotLight.name = name;
+    if (!spotLight.name)
+        spotLight.name = 'SpotLight'+slCount;
+    slCount++;
 
     var targetObject = new THREE.Object3D();
     targetObject.position.set(0, -1, 0);
