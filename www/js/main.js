@@ -90,7 +90,7 @@ ball.castShadow = true;
 scene.add(ball);
 
 // Lighting
-var sun = createDirectionalLight([0, 1000, 0], true);
+var sun = createDirectionalLight([0, 1000, 0], true, 'Sun');
 var pivotPoint = new THREE.Object3D();
 pivotPoint.add(sun);
 scene.add(pivotPoint);

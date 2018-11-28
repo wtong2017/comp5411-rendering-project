@@ -58,7 +58,9 @@ shadowMapPower.addEventListener('change', function(e) {
 function updateLightPanel() {
     var newId = lights.length-1;
 
-    newChild = '<label for=light"'+newId+'">Light '+newId+'</label><input type="range" id="light'+newId+'" name="light'+newId+'" min="0" max="1" value="1" step="0.01"><br>'
+    var label = lights[newId].name ? lights[newId].name : 'Light'+newId;
+
+    newChild = '<label for=light"'+newId+'">'+label+'</label><input type="range" id="light'+newId+'" name="light'+newId+'" min="0" max="1" value="1" step="0.01"><br>'
     lightPanel.insertAdjacentHTML('beforeend', newChild);
 
     document.addEventListener('change',function(e){
